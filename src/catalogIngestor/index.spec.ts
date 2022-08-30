@@ -1,13 +1,10 @@
 import { CatalogIngestor } from "catalogIngestor";
 
 describe("CatalogIngestor", () => {
-  const getData = jest.fn();
-
   it("should allow initializing with a new api token", () => {
-    const catalogIngestor = new CatalogIngestor(
-      { constructorApiToken: "api-token" },
-      getData
-    );
+    const catalogIngestor = new CatalogIngestor({
+      constructorApiToken: "api-token",
+    });
 
     expect(catalogIngestor.credentials.constructorApiToken).toBe("api-token");
   });
