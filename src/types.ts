@@ -38,7 +38,7 @@ export interface Item {
   description: string;
   url: string | null;
   image_url: string | null;
-  active: StringifiedBoolean;
+  active: boolean;
   keywords: string[];
 
   /**
@@ -58,7 +58,7 @@ export interface Item {
    * - `updatedAt` (`Date`)
    * - `publishedAt` (`Date`)
    * - `totalInventory` (`number`)
-   * - `isGiftCard` (`TRUE` | `FALSE`)
+   * - `isGiftCard` (`boolean`)
    * - `minPrice` (`float`)
    * - `maxPrice` (`float`)
    */
@@ -88,7 +88,7 @@ export interface Variation {
   item_name: string;
   image_url: string | null;
   item_id: string;
-  active: StringifiedBoolean;
+  active: boolean;
 
   /**
    * Defines the metadata for this variation.
@@ -97,7 +97,7 @@ export interface Variation {
    * - `displayName` (`string`)
    * - `originalSrc` (`string`)
    * - `sku` (`string`)
-   * - `availableForSale` (`TRUE` | `FALSE`)
+   * - `availableForSale` (`boolean`)
    * - `createdAt` (`Date`)
    * - `updatedAt` (`Date`)
    * - `price` (`float`)
@@ -123,5 +123,3 @@ export interface KeyValue {
   key: string;
   value: string | string[] | null;
 }
-
-export type StringifiedBoolean = "TRUE" | "FALSE";

@@ -17,43 +17,57 @@ npm i @constructor/ingestor
 To ingest data, you simply need to call the `ingest` method:
 
 ```ts
-import { Ingestor, CatalogIngestion } from '@constructor/ingestor';
+async function fetchData(): Promise<ExternalData> {
+  // TODO: Implement your logic to fetch data here.
 
-const ingestor = new Ingestor('<YOUR_API_TOKEN>');
+  return {};
+}
 
-const data: CatalogIngestion = {
-  groups: [
-    {
-      parent_id: null,
-      name: "Shoes",
-      id: "shoes",
-    },
-  ],
-  items: [
-    {
-      id: "nike-shoes-brown",
-      item_name: "Nike Shoes Brown",
-      image_url: "https://images.nike.com/shoes-brown.jpg",
-      url: "https://www.nike.com/shoes-brown",
-      description: "Best shoes",
-      group_ids: ["shoes"],
-      active: "TRUE",
-      metadata: [],
-      keywords: [],
-      facets: [
-        {
-          key: "Color",
-          value: "Brown",
-        },
-        {
-          key: "Size",
-          value: ["M", "L", "XL"],
-        },
-      ],
-    },
-  ],
-  variations: [],
-};
+function transformData(data: ExternalData): CatalogIngestion {
+  // TODO: Implement your logic to transform data here.
+  // Here, we're just using an example dataset.
 
-await ingestor.ingest(data);
+  return {
+    groups: [
+      {
+        parent_id: null,
+        name: "Shoes",
+        id: "shoes",
+      },
+    ],
+    items: [
+      {
+        id: "nike-shoes-brown",
+        item_name: "Nike Shoes Brown",
+        image_url: "https://images.nike.com/shoes-brown.jpg",
+        url: "https://www.nike.com/shoes-brown",
+        description: "Best shoes",
+        group_ids: ["shoes"],
+        active: "TRUE",
+        metadata: [],
+        keywords: [],
+        facets: [
+          {
+            key: "Color",
+            value: "Brown",
+          },
+          {
+            key: "Size",
+            value: ["M", "L", "XL"],
+          },
+        ],
+      },
+    ],
+    variations: [],
+  };
+}
+
+const catalogIngestor = new CatalogIngestor({
+  constructorApiToken: "my-constructor-api-token",
+});
+
+await catalogIngestor.ingest(async () => {
+  const data = await fetchData();
+  return transformData(data);
+});
 ```
