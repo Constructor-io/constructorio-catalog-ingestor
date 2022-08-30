@@ -17,27 +17,43 @@ npm i @constructor/ingestor
 To ingest data, you simply need to call the `ingest` method:
 
 ```ts
-import { Ingestor, CatalogData } from '@constructor/ingestor';
+import { Ingestor, CatalogIngestion } from '@constructor/ingestor';
 
-const ingestor = new Ingestor({
-  api_token: '<YOUR_API_TOKEN>',
-});
+const ingestor = new Ingestor('<YOUR_API_TOKEN>');
 
-const data: CatalogData[] = [
-  {
-    id: 'nike-shoes-brown',
-    name: 'Nike Shoes Brown',
-    data: {
-      facets: {
-        Color: ['Brown'],
-        Size: ['M', 'L'],
-      },
-      image_url: 'https://images.nike.com/shoes-brown.jpg',
-      url: 'https://nike.com/shoes-brown.html',
-      type: 'Shoes',
+const data: CatalogIngestion = {
+  groups: [
+    {
+      parent_id: null,
+      name: "Shoes",
+      id: "shoes",
     },
-  },
-];
+  ],
+  items: [
+    {
+      id: "nike-shoes-brown",
+      item_name: "Nike Shoes Brown",
+      image_url: "https://images.nike.com/shoes-brown.jpg",
+      url: "https://www.nike.com/shoes-brown",
+      description: "Best shoes",
+      group_ids: ["shoes"],
+      active: "TRUE",
+      metadata: [],
+      keywords: [],
+      facets: [
+        {
+          key: "Color",
+          value: "Brown",
+        },
+        {
+          key: "Size",
+          value: ["M", "L", "XL"],
+        },
+      ],
+    },
+  ],
+  variations: [],
+};
 
 await ingestor.ingest(data);
 ```
