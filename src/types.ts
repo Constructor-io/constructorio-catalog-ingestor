@@ -121,7 +121,7 @@ export interface Variation {
 
 export interface KeyValue {
   key: string;
-  value: string | null;
+  value: string | string[] | null;
 }
 
 export type StringifiedBoolean = "TRUE" | "FALSE";
