@@ -2,8 +2,6 @@
 
 This package is meant to help in the process of ingesting your catalog data into Constructor.io. Internally, it relies on our [public API](https://docs.constructor.io/).
 
-Given a set data structure, it's responsible for parsing that into a CSV file and handling the whole ingestion process.
-
 ## Installation
 
 First, install the package:
