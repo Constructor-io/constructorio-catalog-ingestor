@@ -31,6 +31,7 @@
   "homepage": "https://github.com/Constructor-io/parti-ingestor#readme",
   "devDependencies": {
     "@types/jest": "^28.1.8",
+    "@types/papaparse": "^5.3.5",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
     "eslint": "^8.22.0",
