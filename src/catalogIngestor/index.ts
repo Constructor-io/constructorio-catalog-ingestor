@@ -1,4 +1,4 @@
-import { CatalogIngestion } from "./types";
+import { CatalogIngestionPayload } from "./types";
 
 export class CatalogIngestor {
   readonly credentials: Credentials;
@@ -19,7 +19,7 @@ export class CatalogIngestor {
    * It's generally advised to execute everything you need here, since this allows
    * us to report errors and generally be more precise with each ingestion.
    */
-  async ingest(_getData: () => Promise<CatalogIngestion>) {
+  async ingest(_getData: () => Promise<CatalogIngestionPayload>) {
     // TODO: Implement catalog ingestion.
   }
 }

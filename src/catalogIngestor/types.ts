@@ -1,7 +1,7 @@
 /**
  * The base data type used to ingest data to Constructor.
  */
-export interface CatalogIngestion {
+export interface CatalogIngestionPayload {
   groups: Group[];
   items: Item[];
   variations: Variation[];

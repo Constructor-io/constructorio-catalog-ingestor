@@ -17,13 +17,15 @@ npm i @constructor/ingestor
 To ingest data, you simply need to call the `ingest` method:
 
 ```ts
+import { CatalogIngestionPayload, CatalogIngestor } from "@constructorio/ingestor";
+
 async function fetchData(): Promise<ExternalData> {
   // TODO: Implement your logic to fetch data here.
 
   return {};
 }
 
-function transformData(data: ExternalData): CatalogIngestion {
+function transformData(data: ExternalData): CatalogIngestionPayload {
   // TODO: Implement your logic to transform data here.
   // Here, we're just using an example dataset.
 
