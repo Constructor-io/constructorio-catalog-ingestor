@@ -1,4 +1,4 @@
-import { CatalogIngestion } from "types";
+import { CatalogIngestion } from "./types";
 
 export class CatalogIngestor {
   readonly credentials: Credentials;
