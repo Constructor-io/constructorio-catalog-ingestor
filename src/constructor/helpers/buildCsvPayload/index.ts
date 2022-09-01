@@ -151,31 +151,34 @@ function getColumnsFromProxyObjects<T>(
     (keys) => R.uniq(keys)
   );
 
-  const facetColumns = R.pipe(
-    uniqueColumns,
-    R.filter((column) => column.startsWith("facet:"))
-  );
+  const nestedColumns = getNestedColumns(uniqueColumns);
 
-  const metadataColumns = R.pipe(
+  const sortedColumns = R.pipe(
     uniqueColumns,
-    R.filter((column) => column.startsWith("metadata:"))
-  );
-
-  const commonColumns = R.pipe(
-    uniqueColumns,
-    R.filter(
-      (column) => ![...facetColumns, ...metadataColumns].includes(column)
-    )
-  );
-
-  const sortedCommonColumns = R.pipe(
-    commonColumns,
+    R.filter((column) => !nestedColumns.includes(column)),
     R.sort((a, b) => {
       return order.indexOf(a) - order.indexOf(b);
     })
   );
 
-  return [...sortedCommonColumns, ...facetColumns, ...metadataColumns];
+  return [...sortedColumns, ...nestedColumns];
+}
+
+/**
+ * Builds the sorted nested columns from the unique columns.
+ * @param columns The columns to be filtered.
+ * @returns The sorted nested columns.
+ */
+function getNestedColumns(columns: string[]): string[] {
+  const facetColumns = R.filter(columns, (column) =>
+    column.startsWith("facet:")
+  );
+
+  const metadataColumns = R.filter(columns, (column) =>
+    column.startsWith("metadata:")
+  );
+
+  return [...facetColumns, ...metadataColumns];
 }
 
 const columnOrders: Record<keyof CatalogIngestionPayload, string[]> = {
