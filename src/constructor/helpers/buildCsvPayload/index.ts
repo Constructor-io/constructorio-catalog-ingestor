@@ -62,9 +62,18 @@ function toCsvProxyObject<T, TOut>(object: T): TOut {
     (acc, key) => {
       const value = object[key as keyof T];
 
+      // Nested arrays should be expanded and joined as `{prefix}:key=value`.
       if (isNestedField(key)) {
         const pairs = value as unknown as KeyValue[];
         return pairs.length ? expandNestedArray(acc, key, pairs) : acc;
+      }
+
+      // String arrays should be joined as `x|y`.
+      if (Array.isArray(value)) {
+        return {
+          ...acc,
+          [key]: value.join("|"),
+        };
       }
 
       return {
