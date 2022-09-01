@@ -1,5 +1,8 @@
 import { CatalogIngestionPayload } from "./types";
 
+import { ingestCatalogCsv } from "constructor/api/catalog/ingestCatalogCsv";
+import { buildCsvPayload } from "constructor/helpers/buildCsvPayload";
+
 export class CatalogIngestor {
   readonly credentials: Credentials;
 
@@ -19,8 +22,12 @@ export class CatalogIngestor {
    * It's generally advised to execute everything you need here, since this allows
    * us to report errors and generally be more precise with each ingestion.
    */
-  async ingest(_getData: () => Promise<CatalogIngestionPayload>) {
-    // TODO: Implement catalog ingestion.
+  async ingest(getData: () => Promise<CatalogIngestionPayload>) {
+    const data = await getData();
+
+    const payload = await buildCsvPayload(data);
+
+    await ingestCatalogCsv(payload);
   }
 }
 
