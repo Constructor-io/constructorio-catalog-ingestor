@@ -78,11 +78,14 @@ describe("CatalogIngestor", () => {
 
         expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledTimes(1);
 
-        expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledWith({
-          groups: "groups",
-          items: "items",
-          variations: "variations",
-        });
+        expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledWith(
+          "api-token",
+          {
+            groups: "groups",
+            items: "items",
+            variations: "variations",
+          }
+        );
       });
 
       describe("when the ingestion fails", () => {

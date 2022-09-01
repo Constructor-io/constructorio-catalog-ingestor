@@ -27,7 +27,7 @@ export class CatalogIngestor {
 
     const payload = await buildCsvPayload(data);
 
-    await ingestCatalogCsv(payload);
+    await ingestCatalogCsv(this.credentials.constructorApiToken, payload);
   }
 }
 
