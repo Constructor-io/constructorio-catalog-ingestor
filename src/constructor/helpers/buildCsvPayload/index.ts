@@ -113,7 +113,7 @@ function expandNestedArray<TOut>(
  * @returns Whether the field is a nested field.
  */
 function isNestedField(name: string): boolean {
-  return ["metadata", "facets"].includes(name);
+  return !!nestedColumns[name];
 }
 
 /**
@@ -123,12 +123,8 @@ function isNestedField(name: string): boolean {
  * @returns The name of the transformed nested field.
  */
 function getNestedFieldTransformedName(name: string, key: string): string {
-  const prefix = {
-    metadata: "metadata",
-    facets: "facet",
-  }[name];
-
-  return `${prefix}:${key}`;
+  const nestedColumn = nestedColumns[name];
+  return `${nestedColumn.prefix}:${key}`;
 }
 
 /**
@@ -170,17 +166,19 @@ function getColumnsFromProxyObjects<T>(
  * @returns The sorted nested columns.
  */
 function getNestedColumns(columns: string[]): string[] {
-  const facetColumns = R.filter(columns, (column) =>
-    column.startsWith("facet:")
+  return R.pipe(
+    R.values(nestedColumns),
+    R.flatMap((nestedColumn) => {
+      return R.filter(columns, (column) =>
+        column.startsWith(`${nestedColumn.prefix}:`)
+      );
+    })
   );
-
-  const metadataColumns = R.filter(columns, (column) =>
-    column.startsWith("metadata:")
-  );
-
-  return [...facetColumns, ...metadataColumns];
 }
 
+/**
+ * Defines the correct csv column order for each record type.
+ */
 const columnOrders: Record<keyof CatalogIngestionPayload, string[]> = {
   groups: ["parent_id", "id", "name"],
   items: [
@@ -195,3 +193,22 @@ const columnOrders: Record<keyof CatalogIngestionPayload, string[]> = {
   ],
   variations: ["variation_id", "item_id", "item_name", "image_url", "active"],
 };
+
+/**
+ * Defines nested columns that need to be handled.
+ */
+const nestedColumns: Record<string, NestedColumn> = {
+  facets: {
+    fieldName: "facets",
+    prefix: "facet",
+  },
+  metadata: {
+    fieldName: "metadata",
+    prefix: "metadata",
+  },
+};
+
+interface NestedColumn {
+  fieldName: string;
+  prefix: string;
+}
