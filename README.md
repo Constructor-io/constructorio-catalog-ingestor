@@ -2,8 +2,6 @@
 
 This package is meant to help in the process of ingesting your catalog data into Constructor.io. Internally, it relies on our [public API](https://docs.constructor.io/).
 
-Given a set data structure, it's responsible for parsing that into a CSV file and handling the whole ingestion process.
-
 ## Installation
 
 First, install the package:
@@ -17,13 +15,15 @@ npm i @constructor/ingestor
 To ingest data, you simply need to call the `ingest` method:
 
 ```ts
+import { CatalogIngestionPayload, CatalogIngestor } from "@constructorio/ingestor";
+
 async function fetchData(): Promise<ExternalData> {
   // TODO: Implement your logic to fetch data here.
 
   return {};
 }
 
-function transformData(data: ExternalData): CatalogIngestion {
+function transformData(data: ExternalData): CatalogIngestionPayload {
   // TODO: Implement your logic to transform data here.
   // Here, we're just using an example dataset.
 

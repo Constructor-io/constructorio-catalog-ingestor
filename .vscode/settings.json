@@ -4,6 +4,8 @@
     "github",
     "ingestor",
     "nike",
-    "noemit"
+    "noemit",
+    "papaparse",
+    "unparse"
   ]
 }
