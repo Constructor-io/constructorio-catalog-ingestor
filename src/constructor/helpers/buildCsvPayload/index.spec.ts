@@ -8,10 +8,7 @@ describe(buildCsvPayload, () => {
     catalogIngestionPayloadFactory.build();
 
   function buildExpectedCsv(rows: string[]) {
-    const csv = rows.join("\n");
-
-    // Add the last empty csv row
-    return `${csv}\n`;
+    return rows.join("\n");
   }
 
   it("should return a csv payload for groups, items & variations", async () => {
