@@ -10,14 +10,22 @@ export const variationFactory = Factory.define<Variation>(() => ({
   image_url: "variation-image-url",
   metadata: [
     {
-      key: "variation-metadata-key",
-      value: "variation-metadata-value",
+      key: "metadata-1-key",
+      value: "metadata-1-value",
+    },
+    {
+      key: "metadata-2-key",
+      value: "metadata-2-value",
     },
   ],
   facets: [
     {
-      key: "variation-facet-key",
-      value: "variation-facet-value",
+      key: "facet-1-key",
+      value: "facet-1-value",
+    },
+    {
+      key: "facet-2-key",
+      value: "facet-2-value",
     },
   ],
 }));

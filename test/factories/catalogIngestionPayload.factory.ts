@@ -8,7 +8,18 @@ import { CatalogIngestionPayload } from "catalogIngestor/types";
 
 export const catalogIngestionPayloadFactory =
   Factory.define<CatalogIngestionPayload>(() => ({
-    groups: groupFactory.buildList(1),
+    groups: [
+      groupFactory.build({
+        id: "all",
+        name: "All",
+        parent_id: null,
+      }),
+      groupFactory.build({
+        id: "group-id",
+        name: "group-name",
+        parent_id: "all",
+      }),
+    ],
     items: itemFactory.buildList(1),
     variations: variationFactory.buildList(1),
   }));
