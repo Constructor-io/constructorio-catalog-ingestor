@@ -9,15 +9,16 @@ import { CatalogIngestor } from "catalogIngestor";
 describe("CatalogIngestor", () => {
   let getData: () => Promise<CatalogIngestionPayload>;
   let catalogIngestor: CatalogIngestor;
+  let payload: CatalogIngestionPayload;
 
   beforeEach(() => {
     catalogIngestor = new CatalogIngestor({
       constructorApiToken: "api-token",
     });
 
-    getData = jest
-      .fn()
-      .mockResolvedValue(catalogIngestionPayloadFactory.build());
+    payload = catalogIngestionPayloadFactory.build();
+
+    getData = jest.fn().mockResolvedValue(payload);
 
     jest.spyOn(buildCsvPayload, "buildCsvPayload").mockResolvedValue({
       groups: "groups",
@@ -42,15 +43,21 @@ describe("CatalogIngestor", () => {
 
       describe("when the promise fails", () => {
         beforeEach(() => {
-          getData = jest.fn().mockRejectedValue(new Error("foo!"));
+          getData = jest
+            .fn()
+            .mockRejectedValue(new Error("Houston, we have a problem! 🧨"));
         });
 
         it("should throw the error", async () => {
-          await expect(catalogIngestor.ingest(getData)).rejects.toThrow("foo!");
+          await expect(catalogIngestor.ingest(getData)).rejects.toThrow(
+            "Houston, we have a problem!"
+          );
         });
 
         it("should not proceed with the ingestion", async () => {
-          await expect(catalogIngestor.ingest(getData)).rejects.toThrow("foo!");
+          await expect(catalogIngestor.ingest(getData)).rejects.toThrow(
+            "Houston, we have a problem! 🧨"
+          );
 
           expect(buildCsvPayload.buildCsvPayload).not.toHaveBeenCalled();
           expect(ingestCatalogCsv.ingestCatalogCsv).not.toHaveBeenCalled();
@@ -59,11 +66,37 @@ describe("CatalogIngestor", () => {
     });
 
     describe("when ingesting data", () => {
-      it.todo("should convert the data to csv files");
-      it.todo("should upload the csv to our api");
+      it("should convert the data to csv files", async () => {
+        await catalogIngestor.ingest(getData);
+
+        expect(buildCsvPayload.buildCsvPayload).toHaveBeenCalledTimes(1);
+        expect(buildCsvPayload.buildCsvPayload).toHaveBeenCalledWith(payload);
+      });
+
+      it("should upload the csv to our api", async () => {
+        await catalogIngestor.ingest(getData);
+
+        expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledTimes(1);
+
+        expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledWith({
+          groups: "groups",
+          items: "items",
+          variations: "variations",
+        });
+      });
 
       describe("when the ingestion fails", () => {
-        it.todo("should stop the whole ingestion process");
+        beforeEach(() => {
+          jest
+            .spyOn(ingestCatalogCsv, "ingestCatalogCsv")
+            .mockRejectedValue(new Error("Houston, our api exploded! 🤯"));
+        });
+
+        it("should throw the error", async () => {
+          await expect(catalogIngestor.ingest(getData)).rejects.toThrow(
+            "Houston, our api exploded! 🤯"
+          );
+        });
       });
     });
   });
