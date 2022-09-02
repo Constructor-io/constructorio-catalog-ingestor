@@ -8,7 +8,8 @@ describe(ingestCatalogCsv, () => {
     jest.spyOn(got, "put").mockReturnValue({
       json: async () =>
         await Promise.resolve({
-          task_status_path: "foobar",
+          task_status_path: "task_status_path",
+          task_id: "task_id",
         }),
     } as any);
   });
@@ -28,6 +29,16 @@ describe(ingestCatalogCsv, () => {
         key: "apiToken",
       },
     });
+  });
+
+  it("returns the task id", async () => {
+    const result = await ingestCatalogCsv("apiToken", {
+      variations: "variations",
+      groups: "groups",
+      items: "items",
+    });
+
+    expect(result).toEqual("task_id");
   });
 
   describe("when the request fails", () => {

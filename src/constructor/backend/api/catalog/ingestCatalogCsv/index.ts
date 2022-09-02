@@ -7,11 +7,12 @@ import { config } from "constructor/backend/api/config";
  * Ingests the catalog CSV files into Constructor.
  * @param apiToken The API token.
  * @param payload The data parsed into csv files.
+ * @returns The created task id.
  */
 export async function ingestCatalogCsv(
   apiToken: string,
   payload: CsvPayload
-): Promise<void> {
+): Promise<string> {
   const formData = buildFormData(payload);
 
   const json = await got
@@ -25,13 +26,15 @@ export async function ingestCatalogCsv(
     })
     .json<Response>();
 
-  const { task_status_path: taskStatusPath } = json;
+  const { task_id: taskId } = json;
 
-  if (!taskStatusPath) {
+  if (!taskId) {
     throw new Error(
       "[Ingestor] Received error response while ingesting CSV files."
     );
   }
+
+  return taskId;
 }
 
 /**
