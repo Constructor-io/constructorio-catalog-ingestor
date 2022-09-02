@@ -1,7 +1,7 @@
 import FormData from "form-data";
 import got from "got";
 
-import { config } from "constructor/api/config";
+import { config } from "constructor/backend/api/config";
 
 /**
  * Ingests the catalog CSV files into Constructor.
@@ -84,5 +84,6 @@ export interface CsvPayload {
 }
 
 interface Response {
+  task_id: string;
   task_status_path: string;
 }

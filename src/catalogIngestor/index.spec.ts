@@ -2,7 +2,7 @@ import { catalogIngestionPayloadFactory } from "../../test/factories/catalogInge
 
 import { CatalogIngestionPayload } from "./types";
 
-import * as ingestCatalogCsv from "constructor/api/catalog/ingestCatalogCsv";
+import * as ingestCatalogCsv from "constructor/backend/api/catalog/ingestCatalogCsv";
 import * as buildCsvPayload from "constructor/helpers/buildCsvPayload";
 import { CatalogIngestor } from "catalogIngestor";
 

@@ -1,6 +1,6 @@
 import { CatalogIngestionPayload } from "./types";
 
-import { ingestCatalogCsv } from "constructor/api/catalog/ingestCatalogCsv";
+import { ingestCatalogCsv } from "constructor/backend/api/catalog/ingestCatalogCsv";
 import { buildCsvPayload } from "constructor/helpers/buildCsvPayload";
 
 export class CatalogIngestor {
