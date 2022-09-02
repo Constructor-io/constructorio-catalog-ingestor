@@ -1,5 +1,5 @@
-import { catalogIngestionPayloadFactory } from "../../../../test/factories/catalogIngestionPayload.factory";
-import { itemFactory } from "../../../../test/factories/item.factory";
+import { catalogIngestionPayloadFactory } from "../../../../../test/factories/catalogIngestionPayload.factory";
+import { itemFactory } from "../../../../../test/factories/item.factory";
 
 import { buildCsvPayload } from ".";
 

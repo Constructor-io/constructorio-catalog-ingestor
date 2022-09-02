@@ -2,8 +2,9 @@ import { catalogIngestionPayloadFactory } from "../../test/factories/catalogInge
 
 import { CatalogIngestionPayload } from "./types";
 
-import * as ingestCatalogCsv from "constructor/api/catalog/ingestCatalogCsv";
-import * as buildCsvPayload from "constructor/helpers/buildCsvPayload";
+import * as createIngestionEvent from "constructor/partnerAuthenticator/api/catalogIngestionEvents/create";
+import * as ingestCatalogCsv from "constructor/backend/api/catalog/ingestCatalogCsv";
+import * as buildCsvPayload from "constructor/backend/helpers/buildCsvPayload";
 import { CatalogIngestor } from "catalogIngestor";
 
 describe("CatalogIngestor", () => {
@@ -14,6 +15,7 @@ describe("CatalogIngestor", () => {
   beforeEach(() => {
     catalogIngestor = new CatalogIngestor({
       constructorApiToken: "api-token",
+      connectionId: "connection-id",
     });
 
     payload = catalogIngestionPayloadFactory.build();
@@ -26,11 +28,44 @@ describe("CatalogIngestor", () => {
       variations: "variations",
     });
 
-    jest.spyOn(ingestCatalogCsv, "ingestCatalogCsv").mockResolvedValue();
+    jest
+      .spyOn(ingestCatalogCsv, "ingestCatalogCsv")
+      .mockResolvedValue("task_id");
+
+    jest
+      .spyOn(createIngestionEvent, "createIngestionEvent")
+      .mockResolvedValue();
   });
 
-  it("should allow initializing with a new api token", () => {
-    expect(catalogIngestor.credentials.constructorApiToken).toBe("api-token");
+  it("should allow initializing with new credentials", () => {
+    expect(catalogIngestor.credentials).toEqual({
+      constructorApiToken: "api-token",
+      connectionId: "connection-id",
+    });
+  });
+
+  describe("when the connection id is not provided", () => {
+    beforeEach(() => {
+      catalogIngestor = new CatalogIngestor({
+        constructorApiToken: "api-token",
+      });
+
+      jest.spyOn(console, "warn").mockImplementation();
+    });
+
+    it("should not create an ingestion event", async () => {
+      await catalogIngestor.ingest(getData);
+
+      expect(createIngestionEvent.createIngestionEvent).not.toHaveBeenCalled();
+    });
+
+    it("warns", async () => {
+      await catalogIngestor.ingest(getData);
+
+      expect(console.warn).toHaveBeenCalledWith(
+        "[Ingestor] The connection id is not provided. Skipping ingestion event creation."
+      );
+    });
   });
 
   describe("ingest", () => {
@@ -62,6 +97,23 @@ describe("CatalogIngestor", () => {
           expect(buildCsvPayload.buildCsvPayload).not.toHaveBeenCalled();
           expect(ingestCatalogCsv.ingestCatalogCsv).not.toHaveBeenCalled();
         });
+
+        it("should create a new failed ingestion event", async () => {
+          await expect(catalogIngestor.ingest(getData)).rejects.toThrow(
+            "Houston, we have a problem! 🧨"
+          );
+
+          expect(
+            createIngestionEvent.createIngestionEvent
+          ).toHaveBeenCalledWith("connection-id", {
+            success: false,
+            cioTaskId: null,
+            countOfGroups: 0,
+            countOfItems: 0,
+            countOfVariations: 0,
+            totalIngestionTimeMs: expect.any(Number),
+          });
+        });
       });
     });
 
@@ -88,6 +140,22 @@ describe("CatalogIngestor", () => {
         );
       });
 
+      it("should create a new successful ingestion event", async () => {
+        await catalogIngestor.ingest(getData);
+
+        expect(createIngestionEvent.createIngestionEvent).toHaveBeenCalledWith(
+          "connection-id",
+          {
+            success: true,
+            cioTaskId: "task_id",
+            countOfGroups: 2,
+            countOfItems: 1,
+            countOfVariations: 1,
+            totalIngestionTimeMs: expect.any(Number),
+          }
+        );
+      });
+
       describe("when the ingestion fails", () => {
         beforeEach(() => {
           jest
@@ -99,6 +167,23 @@ describe("CatalogIngestor", () => {
           await expect(catalogIngestor.ingest(getData)).rejects.toThrow(
             "Houston, our api exploded! 🤯"
           );
+        });
+
+        it("should create a new failed ingestion event", async () => {
+          await expect(catalogIngestor.ingest(getData)).rejects.toThrow(
+            "Houston, our api exploded! 🤯"
+          );
+
+          expect(
+            createIngestionEvent.createIngestionEvent
+          ).toHaveBeenCalledWith("connection-id", {
+            success: false,
+            cioTaskId: null,
+            countOfGroups: 2,
+            countOfItems: 1,
+            countOfVariations: 1,
+            totalIngestionTimeMs: expect.any(Number),
+          });
         });
       });
     });

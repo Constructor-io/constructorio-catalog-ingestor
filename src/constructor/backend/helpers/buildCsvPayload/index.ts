@@ -1,8 +1,8 @@
 import Papa from "papaparse";
 import * as R from "remeda";
 
+import { CsvPayload } from "constructor/backend/api/catalog/ingestCatalogCsv";
 import { CatalogIngestionPayload, KeyValue } from "catalogIngestor/types";
-import { CsvPayload } from "constructor/api/catalog/ingestCatalogCsv";
 
 /**
  * Builds the csv payload for the catalog ingestion.
