@@ -2,6 +2,7 @@ import { CatalogIngestionPayload } from "./types";
 
 import { ingestCatalogCsv } from "constructor/backend/api/catalog/ingestCatalogCsv";
 import { buildCsvPayload } from "constructor/backend/helpers/buildCsvPayload";
+import { createIngestionEvent } from "constructor/partnerAuthenticator/api/catalogIngestionEvents/create";
 
 export class CatalogIngestor {
   readonly credentials: Credentials;
@@ -23,11 +24,50 @@ export class CatalogIngestor {
    * us to report errors and generally be more precise with each ingestion.
    */
   async ingest(getData: () => Promise<CatalogIngestionPayload>) {
-    const data = await getData();
+    let data: CatalogIngestionPayload | null = null;
+    const startTime = new Date();
 
-    const payload = await buildCsvPayload(data);
+    try {
+      data = await getData();
 
-    await ingestCatalogCsv(this.credentials.constructorApiToken, payload);
+      const payload = await buildCsvPayload(data);
+
+      const taskId = await ingestCatalogCsv(
+        this.credentials.constructorApiToken,
+        payload
+      );
+
+      await this.createIngestionEvent(startTime, true, data, taskId);
+    } catch (error) {
+      await this.createIngestionEvent(startTime, false, data, null);
+      throw error;
+    }
+  }
+
+  private async createIngestionEvent(
+    startTime: Date,
+    success: boolean,
+    data: CatalogIngestionPayload | null,
+    taskId: string | null
+  ) {
+    if (!this.credentials.connectionId) {
+      console.warn(
+        "[Ingestor] The connection id is not provided. Skipping ingestion event creation."
+      );
+
+      return;
+    }
+
+    const totalTimeMs = new Date().getTime() - startTime.getTime();
+
+    await createIngestionEvent(this.credentials.connectionId, {
+      success,
+      cioTaskId: taskId ?? null,
+      countOfVariations: data?.variations?.length ?? 0,
+      countOfGroups: data?.groups?.length ?? 0,
+      countOfItems: data?.items?.length ?? 0,
+      totalIngestionTimeMs: totalTimeMs,
+    });
   }
 }
 
