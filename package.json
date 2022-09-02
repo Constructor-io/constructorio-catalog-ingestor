@@ -75,6 +75,9 @@
     "collectCoverageFrom": [
       "src/**/*.(t|j)s"
     ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/index.ts"
+    ],
     "setupFiles": [],
     "coverageDirectory": "coverage",
     "testEnvironment": "node",
