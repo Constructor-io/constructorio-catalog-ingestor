@@ -14,6 +14,7 @@ describe("CatalogIngestor", () => {
   beforeEach(() => {
     catalogIngestor = new CatalogIngestor({
       constructorApiToken: "api-token",
+      connectionId: "connection-id",
     });
 
     payload = catalogIngestionPayloadFactory.build();
@@ -26,11 +27,16 @@ describe("CatalogIngestor", () => {
       variations: "variations",
     });
 
-    jest.spyOn(ingestCatalogCsv, "ingestCatalogCsv").mockResolvedValue();
+    jest
+      .spyOn(ingestCatalogCsv, "ingestCatalogCsv")
+      .mockResolvedValue("task_id");
   });
 
-  it("should allow initializing with a new api token", () => {
-    expect(catalogIngestor.credentials.constructorApiToken).toBe("api-token");
+  it("should allow initializing with new credentials", () => {
+    expect(catalogIngestor.credentials).toEqual({
+      constructorApiToken: "api-token",
+      connectionId: "connection-id",
+    });
   });
 
   describe("ingest", () => {

@@ -33,4 +33,5 @@ export class CatalogIngestor {
 
 interface Credentials {
   constructorApiToken: string;
+  connectionId?: string;
 }
