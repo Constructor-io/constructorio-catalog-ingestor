@@ -1,5 +1,5 @@
 {
-  "name": "catalog-ingestor",
+  "name": "@constructor-io/ingestor",
   "version": "1.0.0",
   "description": "Package to help ingesting catalog data into Constructor.io ☕️",
   "main": "dist/commonjs/index.js",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Constructor-io/catalog-ingestor.git"
+    "url": "git+https://github.com/Constructor-io/@constructor-io/ingestor.git"
   },
   "keywords": [
     "nodejs",
@@ -37,9 +37,9 @@
   ],
   "author": "Constructor.io",
   "bugs": {
-    "url": "https://github.com/Constructor-io/catalog-ingestor/issues"
+    "url": "https://github.com/Constructor-io/@constructor-io/ingestor/issues"
   },
-  "homepage": "https://github.com/Constructor-io/catalog-ingestor#readme",
+  "homepage": "https://github.com/Constructor-io/@constructor-io/ingestor#readme",
   "devDependencies": {
     "@types/jest": "^28.1.8",
     "@types/papaparse": "^5.3.5",
