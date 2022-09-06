@@ -5,6 +5,8 @@
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "tsc --project tsconfig.production.json",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "type-check": "tsc --noemit",
     "dev": "ts-node-esm --experimental-specifier-resolution=node src/index.ts",
@@ -14,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Constructor-io/parti-ingestor.git"
+    "url": "git+https://github.com/Constructor-io/catalog-ingestor.git"
   },
   "keywords": [
     "nodejs",
@@ -22,13 +24,15 @@
     "catalog",
     "partner",
     "partner-integrations",
-    "constructorio"
+    "constructor-io",
+    "constructorio",
+    "constructor"
   ],
   "author": "Constructor.io",
   "bugs": {
-    "url": "https://github.com/Constructor-io/parti-ingestor/issues"
+    "url": "https://github.com/Constructor-io/catalog-ingestor/issues"
   },
-  "homepage": "https://github.com/Constructor-io/parti-ingestor#readme",
+  "homepage": "https://github.com/Constructor-io/catalog-ingestor#readme",
   "devDependencies": {
     "@types/jest": "^28.1.8",
     "@types/papaparse": "^5.3.5",

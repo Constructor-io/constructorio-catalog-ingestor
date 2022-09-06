@@ -1,3 +1,12 @@
+# Constructor.io Catalog Ingestor
+
+[![npm](https://img.shields.io/npm/v/@constructor-io/catalog-ingestor)](https://www.npmjs.com/package/@constructor-io/catalog-ingestor)
+[![Minzipped Size](https://img.shields.io/bundlephobia/minzip/@constructor-io/catalog-ingestor)](https://bundlephobia.com/result?p=@constructor-io/catalog-ingestor)
+
+A Node.js library for easily ingesting product catalogs into Constructor.io, using a strict type system.
+
+> This client is intended for use in server side integrations. If you want a JavaScript client for client side (i.e. front end) integrations please use [@constructor-io/constructorio-client-javascript](https://github.com/Constructor-io/constructorio-client-javascript)
+
 ## Description
 
 This package is meant to help in the process of ingesting your catalog data into Constructor.io. Internally, it relies on our [public API](https://docs.constructor.io/).
@@ -15,7 +24,7 @@ npm i @constructor/ingestor
 To ingest data, you simply need to call the `ingest` method:
 
 ```ts
-import { CatalogIngestionPayload, CatalogIngestor } from "@constructorio/ingestor";
+import { CatalogIngestionPayload, CatalogIngestor } from "@constructor-io/ingestor";
 
 async function fetchData(): Promise<ExternalData> {
   // TODO: Implement your logic to fetch data here.
