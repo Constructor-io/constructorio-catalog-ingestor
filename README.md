@@ -15,7 +15,7 @@ npm i @constructor/ingestor
 To ingest data, you simply need to call the `ingest` method:
 
 ```ts
-import { CatalogIngestionPayload, CatalogIngestor } from "@constructorio/ingestor";
+import { CatalogIngestionPayload, CatalogIngestor } from "@constructor-io/ingestor";
 
 async function fetchData(): Promise<ExternalData> {
   // TODO: Implement your logic to fetch data here.
