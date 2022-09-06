@@ -1,7 +1,7 @@
 import FormData from "form-data";
 import got from "got";
 
-import { config } from "constructor/backend/api/config";
+import { config } from "../../config";
 
 /**
  * Ingests the catalog CSV files into Constructor.
