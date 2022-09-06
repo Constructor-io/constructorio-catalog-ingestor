@@ -1,6 +1,6 @@
 import { Factory } from "fishery";
 
-import { Item } from "catalogIngestor/types";
+import { Item } from "../../src";
 
 export const itemFactory = Factory.define<Item>(() => ({
   id: "item-id",
