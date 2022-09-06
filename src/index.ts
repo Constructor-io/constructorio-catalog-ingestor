@@ -1,2 +1,2 @@
-export * from "catalogIngestor";
-export * from "catalogIngestor/types";
+export * from "./catalogIngestor/types";
+export * from "./catalogIngestor/index";

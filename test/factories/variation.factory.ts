@@ -1,6 +1,6 @@
 import { Factory } from "fishery";
 
-import { Variation } from "catalogIngestor/types";
+import { Variation } from "../../src";
 
 export const variationFactory = Factory.define<Variation>(() => ({
   variation_id: "variation-id",

@@ -1,6 +1,6 @@
 import { Factory } from "fishery";
 
-import { Group } from "catalogIngestor/types";
+import { Group } from "../../src";
 
 export const groupFactory = Factory.define<Group>(() => ({
   id: "group-id",

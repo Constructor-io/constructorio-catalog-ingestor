@@ -1,8 +1,8 @@
-import { CatalogIngestionPayload } from "./types";
+import { createIngestionEvent } from "../constructor/partnerAuthenticator/api/catalogIngestionEvents/create";
+import { ingestCatalogCsv } from "../constructor/backend/api/catalog/ingestCatalogCsv";
+import { buildCsvPayload } from "../constructor/backend/helpers/buildCsvPayload";
 
-import { ingestCatalogCsv } from "constructor/backend/api/catalog/ingestCatalogCsv";
-import { buildCsvPayload } from "constructor/backend/helpers/buildCsvPayload";
-import { createIngestionEvent } from "constructor/partnerAuthenticator/api/catalogIngestionEvents/create";
+import { CatalogIngestionPayload } from "./types";
 
 export class CatalogIngestor {
   readonly credentials: Credentials;
