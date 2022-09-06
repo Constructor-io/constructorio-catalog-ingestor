@@ -22,7 +22,9 @@
     "catalog",
     "partner",
     "partner-integrations",
-    "constructorio"
+    "constructor-io",
+    "constructorio",
+    "constructor"
   ],
   "author": "Constructor.io",
   "bugs": {
