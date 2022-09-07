@@ -52,7 +52,7 @@ function transformData(data: ExternalData): CatalogIngestionPayload {
         url: "https://www.nike.com/shoes-brown",
         description: "Best shoes",
         group_ids: ["shoes"],
-        active: "TRUE",
+        active: true,
         metadata: [],
         keywords: [],
         facets: [
