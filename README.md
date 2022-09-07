@@ -24,7 +24,7 @@ npm i @constructor/ingestor
 To ingest data, you simply need to call the `ingest` method:
 
 ```ts
-import { CatalogIngestionPayload, CatalogIngestor } from "@constructor-io/ingestor";
+import { CatalogIngestionPayload, CatalogIngestor } from "@constructor-io/catalog-ingestor";
 
 async function fetchData(): Promise<ExternalData> {
   // TODO: Implement your logic to fetch data here.
@@ -52,7 +52,7 @@ function transformData(data: ExternalData): CatalogIngestionPayload {
         url: "https://www.nike.com/shoes-brown",
         description: "Best shoes",
         group_ids: ["shoes"],
-        active: "TRUE",
+        active: true,
         metadata: [],
         keywords: [],
         facets: [
@@ -73,6 +73,7 @@ function transformData(data: ExternalData): CatalogIngestionPayload {
 
 const catalogIngestor = new CatalogIngestor({
   constructorApiToken: "my-constructor-api-token",
+  connectionId: "my-connection-id",
 });
 
 await catalogIngestor.ingest(async () => {
