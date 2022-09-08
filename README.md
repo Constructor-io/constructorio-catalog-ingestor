@@ -14,7 +14,11 @@ A Node.js library for easily ingesting product catalogs into Constructor.io usin
 
 Here's how the `@constructor-io/catalog-ingestor` package usually fits into the overall ecosystem:
 
-<img src="./docs/diagram.png" width="1000px" height="auto" alt="Catalog Ingestor Diagram" />
+<img src="./docs/images/diagram.png" width="1000px" height="auto" alt="Catalog Ingestor Diagram" />
+
+## Documentation
+
+Full API documentation is available on [Github Pages](https://constructor-io.github.io/catalog-ingestor)
 
 ## 1. Review the Requirements
 
@@ -172,7 +176,8 @@ await catalogIngestor.ingest(async () => {
 ## Development / npm commands
 
 ```bash
-npm run lint          # run lint on source code and tests
-npm run test          # run tests
-npm run test:cov      # run tests with coverage report
+npm run lint            # run lint on source code and tests
+npm run test            # run tests
+npm run test:cov        # run tests with coverage report
+npm run generate-docs   # output documentation to `./docs` directory
 ```
