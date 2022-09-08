@@ -3,4 +3,9 @@
  */
 export const config = {
   baseUrl: "https://ac.cnstrc.com",
+  buildHeaders(apiToken: string) {
+    return {
+      Authorization: `Basic ${Buffer.from(apiToken).toString("base64")}`,
+    };
+  },
 };
