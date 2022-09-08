@@ -15,7 +15,7 @@
     "build:cjs": "tsc --declaration true --declarationMap true --module commonjs --outDir \"./dist/commonjs\"",
     "prepare": "npm run build",
     "prebuild": "rm -rf dist",
-    "generate-docs": "jsdoc --configure ./.jsdoc.json ./README.md --recurse ./src --destination ./docs",
+    "generate-docs": "jsdoc --configure ./.jsdoc.json ./README.md --recurse ./dist --destination ./docs",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "license-check": "license-checker --production --onlyAllow 'Apache-2.0;BSD-3-Clause;BSD-2-Clause;ISC;MIT'",
     "type-check": "tsc --noemit",
