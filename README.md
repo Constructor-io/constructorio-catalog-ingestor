@@ -79,7 +79,8 @@ function transformData(data: ExternalData): CatalogIngestionPayload {
 }
 
 const catalogIngestor = new CatalogIngestor({
-  constructorApiToken: "my-constructor-api-token",
+  apiToken: "my-constructor-api-token",
+  apiKey: "my-constructor-api-key",
   connectionId: "my-connection-id",
 });
 
