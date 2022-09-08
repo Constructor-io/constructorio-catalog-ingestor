@@ -2,6 +2,7 @@
   "name": "@constructor-io/catalog-ingestor",
   "version": "1.0.0",
   "description": "Package to help ingesting catalog data into Constructor.io ☕️",
+  "license": "MIT",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
   "jsnext:main": "dist/es/index.js",
