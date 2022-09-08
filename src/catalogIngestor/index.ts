@@ -35,6 +35,7 @@ export class CatalogIngestor {
 
       const taskId = await ingestCatalogCsv(
         this.credentials.constructorApiToken,
+        payload.type,
         csvPayload
       );
 

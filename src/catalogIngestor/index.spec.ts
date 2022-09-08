@@ -134,6 +134,7 @@ describe("CatalogIngestor", () => {
 
         expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledWith(
           "api-token",
+          payload.type,
           {
             groups: "groups",
             items: "items",
