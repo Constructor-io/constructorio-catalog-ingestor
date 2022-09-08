@@ -74,7 +74,19 @@ export class CatalogIngestor {
 }
 
 interface Options {
+  /**
+   * The Constructor.io API token.
+   */
   apiToken: string;
+
+  /**
+   * The Constructor.io API key.
+   */
   apiKey: string;
+
+  /**
+   * The connection id to be used when creating ingestion events.
+   * Provided by the partner connector.
+   */
   connectionId?: string;
 }
