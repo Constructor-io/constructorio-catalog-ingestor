@@ -11,7 +11,7 @@ describe("config", () => {
       const headers = config.buildHeaders(apiToken);
 
       expect(headers).toEqual({
-        Authorization: "Basic Zm9v",
+        Authorization: "Basic Zm9vOg==",
       });
     });
   });

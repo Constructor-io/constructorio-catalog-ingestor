@@ -50,7 +50,7 @@ describe(ingestCatalogCsv, () => {
         url: "https://ac.cnstrc.com/v1/catalog",
         body: expect.any(FormData),
         headers: {
-          Authorization: "Basic YXBpVG9rZW4=",
+          Authorization: "Basic YXBpVG9rZW46",
         },
         searchParams: {
           section: "Products",
@@ -71,7 +71,7 @@ describe(ingestCatalogCsv, () => {
         url: "https://ac.cnstrc.com/v1/catalog",
         body: expect.any(FormData),
         headers: {
-          Authorization: "Basic YXBpVG9rZW4=",
+          Authorization: "Basic YXBpVG9rZW46",
         },
         searchParams: {
           section: "Products",
