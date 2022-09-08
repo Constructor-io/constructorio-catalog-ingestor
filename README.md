@@ -8,6 +8,12 @@ A Node.js library for easily ingesting product catalogs into Constructor.io, usi
 
 > This client is intended for use in server side integrations. If you want a JavaScript client for client side (i.e. front end) integrations please use [@constructor-io/constructorio-client-javascript](https://github.com/Constructor-io/constructorio-client-javascript)
 
+## Architecture overview
+
+Here's how the `@constructor-io/catalog-ingestor` package usually fits into the overall ecosystem:
+
+<img src="./docs/diagram.png" width="1000px" height="auto" alt="Catalog Ingestor Diagram" />
+
 ## Description
 
 This package is meant to help in the process of ingesting your catalog data into Constructor.io. Internally, it relies on our [public API](https://docs.constructor.io/).
