@@ -8,8 +8,10 @@ import { ApiOptions, CsvPayload, ingestCatalogCsv } from ".";
 describe(ingestCatalogCsv, () => {
   const options: ApiOptions = {
     type: CatalogIngestionType.FULL,
+    notificationEmail: undefined,
     apiToken: "apiToken",
     apiKey: "apiKey",
+    force: true,
   };
 
   const payload: CsvPayload = {
@@ -55,6 +57,7 @@ describe(ingestCatalogCsv, () => {
         searchParams: {
           section: "Products",
           key: "apiKey",
+          force: "1",
         },
       });
     });
@@ -76,7 +79,55 @@ describe(ingestCatalogCsv, () => {
         searchParams: {
           section: "Products",
           key: "apiKey",
+          force: "1",
         },
+      });
+    });
+  });
+
+  describe("request options", () => {
+    describe("when force is false", () => {
+      it("sends force = 0", async () => {
+        await ingestCatalogCsv(payload, {
+          ...options,
+          force: false,
+        });
+
+        expect(got.put).toHaveBeenCalledWith({
+          url: "https://ac.cnstrc.com/v1/catalog",
+          body: expect.any(FormData),
+          headers: {
+            Authorization: "Basic YXBpVG9rZW46",
+          },
+          searchParams: {
+            section: "Products",
+            key: "apiKey",
+            force: "0",
+          },
+        });
+      });
+    });
+
+    describe("when notificationEmail is provided", () => {
+      it("sends the notification email", async () => {
+        await ingestCatalogCsv(payload, {
+          ...options,
+          notificationEmail: "foo@email.com",
+        });
+
+        expect(got.put).toHaveBeenCalledWith({
+          url: "https://ac.cnstrc.com/v1/catalog",
+          body: expect.any(FormData),
+          headers: {
+            Authorization: "Basic YXBpVG9rZW46",
+          },
+          searchParams: {
+            notification_email: "foo@email.com",
+            section: "Products",
+            key: "apiKey",
+            force: "1",
+          },
+        });
       });
     });
   });
