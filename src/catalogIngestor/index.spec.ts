@@ -122,7 +122,9 @@ describe("CatalogIngestor", () => {
         await catalogIngestor.ingest(getData);
 
         expect(buildCsvPayload.buildCsvPayload).toHaveBeenCalledTimes(1);
-        expect(buildCsvPayload.buildCsvPayload).toHaveBeenCalledWith(payload);
+        expect(buildCsvPayload.buildCsvPayload).toHaveBeenCalledWith(
+          payload.data
+        );
       });
 
       it("should upload the csv to our api", async () => {
@@ -132,6 +134,7 @@ describe("CatalogIngestor", () => {
 
         expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledWith(
           "api-token",
+          payload.type,
           {
             groups: "groups",
             items: "items",

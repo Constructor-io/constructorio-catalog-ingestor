@@ -5,7 +5,7 @@ import { buildCsvPayload } from ".";
 
 describe(buildCsvPayload, () => {
   const data: Parameters<typeof buildCsvPayload>[0] =
-    catalogIngestionPayloadFactory.build();
+    catalogIngestionPayloadFactory.build().data;
 
   function buildExpectedCsv(rows: string[]) {
     return rows.join("\n");

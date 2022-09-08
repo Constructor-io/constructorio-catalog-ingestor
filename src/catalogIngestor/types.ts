@@ -1,7 +1,24 @@
+export enum CatalogIngestionType {
+  /**
+   * Full ingestion. Overrides the existing catalog.
+   */
+  FULL = "full",
+
+  /**
+   * Incremental ingestion. Adds new products to the existing catalog.
+   */
+  DELTA = "delta",
+}
+
 /**
  * The base data type used to ingest data to Constructor.
  */
 export interface CatalogIngestionPayload {
+  type: CatalogIngestionType;
+  data: CatalogIngestionPayloadData;
+}
+
+export interface CatalogIngestionPayloadData {
   groups: Group[];
   items: Item[];
   variations: Variation[];

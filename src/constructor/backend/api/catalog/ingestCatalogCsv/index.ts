@@ -1,6 +1,7 @@
 import FormData from "form-data";
 import got from "got";
 
+import { CatalogIngestionType } from "../../../../../catalogIngestor/types";
 import { config } from "../../config";
 
 /**
@@ -11,20 +12,21 @@ import { config } from "../../config";
  */
 export async function ingestCatalogCsv(
   apiToken: string,
+  type: CatalogIngestionType,
   payload: CsvPayload
 ): Promise<string> {
   const formData = buildFormData(payload);
 
-  const json = await got
-    .put({
-      url: `${config.baseUrl}/v1/catalog`,
-      body: formData,
-      searchParams: {
-        section: "Products",
-        key: apiToken,
-      },
-    })
-    .json<Response>();
+  const httpFunction = type === CatalogIngestionType.FULL ? got.put : got.patch;
+
+  const json = await httpFunction({
+    url: `${config.baseUrl}/v1/catalog`,
+    body: formData,
+    searchParams: {
+      section: "Products",
+      key: apiToken,
+    },
+  }).json<Response>();
 
   const { task_id: taskId } = json;
 

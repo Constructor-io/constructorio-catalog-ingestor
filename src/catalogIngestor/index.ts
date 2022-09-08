@@ -17,29 +17,31 @@ export class CatalogIngestor {
   }
 
   /**
-   * Performs a catalog data ingestion.
+   * Performs a catalog ingestion.
    *
    * @param getData A promise that fetches the initial data to be ingested.
+   *
    * It's generally advised to execute everything you need here, since this allows
    * us to report errors and generally be more precise with each ingestion.
    */
   async ingest(getData: () => Promise<CatalogIngestionPayload>) {
-    let data: CatalogIngestionPayload | null = null;
+    let payload: CatalogIngestionPayload | null = null;
     const startTime = new Date();
 
     try {
-      data = await getData();
+      payload = await getData();
 
-      const payload = await buildCsvPayload(data);
+      const csvPayload = await buildCsvPayload(payload.data);
 
       const taskId = await ingestCatalogCsv(
         this.credentials.constructorApiToken,
-        payload
+        payload.type,
+        csvPayload
       );
 
-      await this.createIngestionEvent(startTime, true, data, taskId);
+      await this.createIngestionEvent(startTime, true, payload, taskId);
     } catch (error) {
-      await this.createIngestionEvent(startTime, false, data, null);
+      await this.createIngestionEvent(startTime, false, payload, null);
       throw error;
     }
   }
@@ -47,7 +49,7 @@ export class CatalogIngestor {
   private async createIngestionEvent(
     startTime: Date,
     success: boolean,
-    data: CatalogIngestionPayload | null,
+    payload: CatalogIngestionPayload | null,
     taskId: string | null
   ) {
     if (!this.credentials.connectionId) {
@@ -63,9 +65,9 @@ export class CatalogIngestor {
     await createIngestionEvent(this.credentials.connectionId, {
       success,
       cioTaskId: taskId ?? null,
-      countOfVariations: data?.variations?.length ?? 0,
-      countOfGroups: data?.groups?.length ?? 0,
-      countOfItems: data?.items?.length ?? 0,
+      countOfVariations: payload?.data?.variations?.length ?? 0,
+      countOfGroups: payload?.data?.groups?.length ?? 0,
+      countOfItems: payload?.data?.items?.length ?? 0,
       totalIngestionTimeMs: totalTimeMs,
     });
   }
