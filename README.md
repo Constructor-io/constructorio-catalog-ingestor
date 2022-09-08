@@ -16,27 +16,102 @@ Here's how the `@constructor-io/catalog-ingestor` package usually fits into the 
 
 <img src="./docs/diagram.png" width="1000px" height="auto" alt="Catalog Ingestor Diagram" />
 
-## Description
+## 1. Review the Requirements
 
-This package is meant to help in the process of ingesting your catalog data into Constructor.io. Internally, it relies on our [public API](https://docs.constructor.io/).
+Before you begin, note that this package is intended for use with partner connections. Some credentials are provided by partner connectors
+while calling this package, so ideally you should be working with a specific partner integration to use this package.
 
-## Installation
+The following credentials are required to use this package:
 
-First, install the package:
+- `apiToken` - Your Constructor.io API token.
+- `apiKey` - Your Constructor.io API key.
+- `connectionId` (optional) - Usually provided by the partner connector. Identifies the partner connection to report events to.
 
-```bash
-npm i @constructor/ingestor
+If you need a more general solution, check out our [Node.js client](https://github.com/Constructor-io/constructorio-node).
+
+## 2. Install
+
+This package can be installed via npm: `npm i @constructor-io/catalog-ingestor`. Once installed, simply import or require the package into your repository.
+
+**Important**: this library should only be used in a server-side context.
+
+## 3. Retrieve an API key and token
+
+You can find this in your [Constructor.io dashboard](https://constructor.io/dashboard). Contact sales if you'd like to sign up, or support if you believe your company already has an account.
+
+## 4. Implement the Client
+
+Once imported, an instance of the client can be created as follows:
+
+```ts
+import { CatalogIngestor } from "@constructor-io/catalog-ingestor";
+
+const catalogIngestor = new CatalogIngestor({
+  connectionId: "YOUR CONNECTION ID",
+  apiToken: "YOUR API TOKEN",
+  apiKey: "YOUR API KEY",
+});
 ```
 
-## Usage
+You can also provide more options to the ingestor, such as an email to notify in case the ingestion fails. For example:
 
-To ingest data, you simply need to call the `ingest` method:
+```ts
+import { CatalogIngestor } from "@constructor-io/catalog-ingestor";
+
+const catalogIngestor = new CatalogIngestor({
+  notificationEmail: "YOUR EMAIL",
+  // ...everything else
+});
+```
+
+Check out our [API docs](https://docs.constructor.io/rest_api/full_catalog/#replace-the-catalog-sync) for more information.
+
+## 5. Ingest your catalog
+
+### Ingestion types
+
+We support both [full](https://docs.constructor.io/rest_api/full_catalog/#replace-the-catalog-sync) and [delta](https://docs.constructor.io/rest_api/full_catalog/#update-the-catalog-delta) ingestions.
+
+This is handled by the `type` argument provided to the `ingest` function.
+
+### Full ingestions
+
+**Full ingestions** replace the entire catalog with the data provided. This is useful for initial catalog ingestion, or when you want to completely replace your catalog with new data.
+
+```ts
+import { CatalogIngestionType } from "@constructor-io/catalog-ingestor";
+
+catalogIngestor.ingest(() => ({
+  type: CatalogIngestionType.FULL,
+  // ...other options
+}));
+```
+
+### Delta ingestions
+
+**Delta ingestions** update the catalog with the data provided. This is useful for updating your catalog with new or changed data.
+
+```ts
+import { CatalogIngestionType } from "@constructor-io/catalog-ingestor";
+
+catalogIngestor.ingest(() => ({
+  type: CatalogIngestionType.DELTA,
+  // ...other options
+}));
+```
+
+### Fetching & transforming data
+
+This package is completely agnostic on how to fetch and transform your data. The only requirement is that you must provide a function that returns a `Promise` that resolves to the ingestion payload.
+
+**It's recommended to fetch & transform your data inside this promise**. This way, we're able to identify and report any issues that may have occurred during ingestion.
+
+Finally, to ingest your catalog data you simply need to call the `ingest` function and pass this promise:
 
 ```ts
 import {
   CatalogIngestionPayload,
   CatalogIngestionType,
-  CatalogIngestor
 } from "@constructor-io/catalog-ingestor";
 
 async function fetchData(): Promise<ExternalData> {
@@ -47,7 +122,7 @@ async function fetchData(): Promise<ExternalData> {
 
 function transformData(data: ExternalData): CatalogIngestionPayload {
   // TODO: Implement your logic to transform data here.
-  // Here, we're just using an example dataset.
+  // As an example, we're just returning static data.
 
   return {
     type: CatalogIngestionType.FULL,
@@ -87,14 +162,17 @@ function transformData(data: ExternalData): CatalogIngestionPayload {
   };
 }
 
-const catalogIngestor = new CatalogIngestor({
-  apiToken: "my-constructor-api-token",
-  apiKey: "my-constructor-api-key",
-  connectionId: "my-connection-id",
-});
 
 await catalogIngestor.ingest(async () => {
   const data = await fetchData();
   return transformData(data);
 });
+```
+
+## Development / npm commands
+
+```bash
+npm run lint          # run lint on source code and tests
+npm run test          # run tests
+npm run test:cov      # run tests with coverage report
 ```
