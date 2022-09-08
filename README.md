@@ -24,7 +24,11 @@ npm i @constructor/ingestor
 To ingest data, you simply need to call the `ingest` method:
 
 ```ts
-import { CatalogIngestionPayload, CatalogIngestor } from "@constructor-io/catalog-ingestor";
+import {
+  CatalogIngestionPayload,
+  CatalogIngestionType,
+  CatalogIngestor
+} from "@constructor-io/catalog-ingestor";
 
 async function fetchData(): Promise<ExternalData> {
   // TODO: Implement your logic to fetch data here.
@@ -37,37 +41,40 @@ function transformData(data: ExternalData): CatalogIngestionPayload {
   // Here, we're just using an example dataset.
 
   return {
-    groups: [
-      {
-        parent_id: null,
-        name: "Shoes",
-        id: "shoes",
-      },
-    ],
-    items: [
-      {
-        id: "nike-shoes-brown",
-        item_name: "Nike Shoes Brown",
-        image_url: "https://images.nike.com/shoes-brown.jpg",
-        url: "https://www.nike.com/shoes-brown",
-        description: "Best shoes",
-        group_ids: ["shoes"],
-        active: true,
-        metadata: [],
-        keywords: [],
-        facets: [
-          {
-            key: "Color",
-            value: "Brown",
-          },
-          {
-            key: "Size",
-            value: ["M", "L", "XL"],
-          },
-        ],
-      },
-    ],
-    variations: [],
+    type: CatalogIngestionType.FULL,
+    data: {
+      groups: [
+        {
+          parent_id: null,
+          name: "Shoes",
+          id: "shoes",
+        },
+      ],
+      items: [
+        {
+          id: "nike-shoes-brown",
+          item_name: "Nike Shoes Brown",
+          image_url: "https://images.nike.com/shoes-brown.jpg",
+          url: "https://www.nike.com/shoes-brown",
+          description: "Best shoes",
+          group_ids: ["shoes"],
+          active: true,
+          metadata: [],
+          keywords: [],
+          facets: [
+            {
+              key: "Color",
+              value: "Brown",
+            },
+            {
+              key: "Size",
+              value: ["M", "L", "XL"],
+            },
+          ],
+        },
+      ],
+      variations: [],
+    },
   };
 }
 
