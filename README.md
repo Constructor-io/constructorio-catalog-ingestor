@@ -172,7 +172,8 @@ await catalogIngestor.ingest(async () => {
 ## Development / npm commands
 
 ```bash
-npm run lint          # run lint on source code and tests
-npm run test          # run tests
-npm run test:cov      # run tests with coverage report
+npm run lint            # run lint on source code and tests
+npm run test            # run tests
+npm run test:cov        # run tests with coverage report
+npm run generate-docs   # output documentation to `./docs` directory
 ```
