@@ -15,11 +15,13 @@ export enum CatalogIngestionType {
  */
 export interface CatalogIngestionPayload {
   type: CatalogIngestionType;
-  data: {
-    groups: Group[];
-    items: Item[];
-    variations: Variation[];
-  };
+  data: CatalogIngestionPayloadData;
+}
+
+export interface CatalogIngestionPayloadData {
+  groups: Group[];
+  items: Item[];
+  variations: Variation[];
 }
 
 /**

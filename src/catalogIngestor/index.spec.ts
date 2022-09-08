@@ -122,7 +122,9 @@ describe("CatalogIngestor", () => {
         await catalogIngestor.ingest(getData);
 
         expect(buildCsvPayload.buildCsvPayload).toHaveBeenCalledTimes(1);
-        expect(buildCsvPayload.buildCsvPayload).toHaveBeenCalledWith(payload);
+        expect(buildCsvPayload.buildCsvPayload).toHaveBeenCalledWith(
+          payload.data
+        );
       });
 
       it("should upload the csv to our api", async () => {

@@ -2,7 +2,7 @@ import Papa from "papaparse";
 import * as R from "remeda";
 
 import {
-  CatalogIngestionPayload,
+  CatalogIngestionPayloadData,
   KeyValue,
 } from "../../../../catalogIngestor/types";
 import { CsvPayload } from "../../api/catalog/ingestCatalogCsv";
@@ -13,7 +13,7 @@ import { CsvPayload } from "../../api/catalog/ingestCatalogCsv";
  * @returns The csv payload.
  */
 export async function buildCsvPayload(
-  data: CatalogIngestionPayload
+  data: CatalogIngestionPayloadData
 ): Promise<CsvPayload> {
   const [groups, items, variations] = await Promise.all([
     toCsv("groups", data.groups),
@@ -35,7 +35,7 @@ export async function buildCsvPayload(
  * @returns The csv.
  */
 async function toCsv<T>(
-  type: keyof CatalogIngestionPayload,
+  type: keyof CatalogIngestionPayloadData,
   objects: T[]
 ): Promise<string | undefined> {
   if (!objects.length) return await Promise.resolve(undefined);
@@ -137,7 +137,7 @@ function getNestedFieldTransformedName(name: string, key: string): string {
  * @returns The csv columns.
  */
 function getColumnsFromProxyObjects<T>(
-  type: keyof CatalogIngestionPayload,
+  type: keyof CatalogIngestionPayloadData,
   proxyObjects: T[]
 ): string[] {
   const order = columnOrders[type];
@@ -182,7 +182,7 @@ function getNestedColumns(columns: string[]): string[] {
 /**
  * Defines the correct csv column order for each record type.
  */
-const columnOrders: Record<keyof CatalogIngestionPayload, string[]> = {
+const columnOrders: Record<keyof CatalogIngestionPayloadData, string[]> = {
   groups: ["parent_id", "id", "name"],
   items: [
     "id",
