@@ -1,6 +1,7 @@
 # Constructor.io Catalog Ingestor
 
 [![npm](https://img.shields.io/npm/v/@constructor-io/catalog-ingestor)](https://www.npmjs.com/package/@constructor-io/catalog-ingestor)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Constructor-io/constructorio-catalog-ingestor/blob/master/LICENSE)
 [![Minzipped Size](https://img.shields.io/bundlephobia/minzip/@constructor-io/catalog-ingestor)](https://bundlephobia.com/result?p=@constructor-io/catalog-ingestor)
 
 A Node.js library for easily ingesting product catalogs into Constructor.io, using a strict type system.
