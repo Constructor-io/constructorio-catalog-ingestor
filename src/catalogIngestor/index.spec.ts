@@ -1,7 +1,7 @@
 import * as createIngestionEvent from "../constructor/partnerAuthenticator/api/catalogIngestionEvents/create";
 import { catalogIngestionPayloadFactory } from "../../test/factories/catalogIngestionPayload.factory";
-import * as ingestCatalogCsv from "../constructor/backend/api/catalog/ingestCatalogCsv";
-import * as buildCsvPayload from "../constructor/backend/helpers/buildCsvPayload";
+import * as ingestCatalogCsv from "../constructor/ac/api/catalog/ingestCatalogCsv";
+import * as buildCsvPayload from "../constructor/ac/helpers/buildCsvPayload";
 
 import { CatalogIngestionPayload } from "./types";
 
