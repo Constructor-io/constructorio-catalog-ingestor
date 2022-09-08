@@ -142,9 +142,11 @@ describe("CatalogIngestor", () => {
             variations: "variations",
           },
           {
+            notificationEmail: undefined,
             apiToken: "api-token",
             type: payload.type,
             apiKey: "api-key",
+            force: true,
           }
         );
       });
@@ -193,6 +195,37 @@ describe("CatalogIngestor", () => {
             countOfVariations: 1,
             totalIngestionTimeMs: expect.any(Number),
           });
+        });
+      });
+
+      describe("when initializing with custom options", () => {
+        beforeEach(() => {
+          catalogIngestor = new CatalogIngestor({
+            notificationEmail: "foo@email.com",
+            connectionId: "connection-id",
+            apiToken: "api-token",
+            apiKey: "api-key",
+            force: false,
+          });
+        });
+
+        it("should pass options to ingest function", async () => {
+          await catalogIngestor.ingest(getData);
+
+          expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledWith(
+            {
+              groups: "groups",
+              items: "items",
+              variations: "variations",
+            },
+            {
+              notificationEmail: "foo@email.com",
+              apiToken: "api-token",
+              type: payload.type,
+              apiKey: "api-key",
+              force: false,
+            }
+          );
         });
       });
     });

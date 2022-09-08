@@ -34,6 +34,8 @@ export class CatalogIngestor {
       const csvPayload = await buildCsvPayload(payload.data);
 
       const taskId = await ingestCatalogCsv(csvPayload, {
+        notificationEmail: this.options.notificationEmail,
+        force: this.options.force ?? true,
         apiToken: this.options.apiToken,
         apiKey: this.options.apiKey,
         type: payload.type,
@@ -89,4 +91,16 @@ interface Options {
    * Provided by the partner connector.
    */
   connectionId?: string;
+
+  /**
+   * Process the catalog even if it will invalidate a large number of existing items.
+   * Defaults to true, since this package assumes that the ingestion happens in
+   * an automated way from a partner system.
+   */
+  force?: boolean;
+
+  /**
+   * An email address where you'd like to receive an email notification in case the task fails.
+   */
+  notificationEmail?: string;
 }
