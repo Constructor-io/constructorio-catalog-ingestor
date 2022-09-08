@@ -16,6 +16,10 @@ Here's how the `@constructor-io/catalog-ingestor` package usually fits into the 
 
 <img src="./images/diagram.png" width="1000px" height="auto" alt="Catalog Ingestor Diagram" />
 
+## Documentation
+
+Full API documentation is available on [Github Pages](https://constructor-io.github.io/catalog-ingestor)
+
 ## 1. Review the Requirements
 
 Before you begin, note that this package is intended for use with partner connections. Some credentials are provided by partner connectors
