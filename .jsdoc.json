@@ -3,7 +3,7 @@
   "recurseDepth": 10,
   "sourceType": "module",
   "source": {
-    "include": ["README.md", "./dist"]
+    "include": ["README.md", "dist/es/catalogIngestor/index.js"]
   },
   "opts": {
     "template": "node_modules/minami",
