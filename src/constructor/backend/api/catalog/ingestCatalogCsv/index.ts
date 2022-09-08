@@ -21,7 +21,7 @@ export async function ingestCatalogCsv(
 
   const json = await httpFunction({
     headers: config.buildHeaders(options.apiToken),
-    url: `${config.baseUrl}/v1/catalog`,
+    url: `${config.serviceUrl}/v1/catalog`,
     body: formData,
     searchParams: {
       section: "Products",
