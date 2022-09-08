@@ -18,7 +18,7 @@ Here's how the `@constructor-io/catalog-ingestor` package usually fits into the 
 
 ## Documentation
 
-Full API documentation is available on [Github Pages](https://constructor-io.github.io/catalog-ingestor)
+Full API documentation is available on [Github Pages](https://constructor-io.github.io/constructorio-catalog-ingestor/index.html)
 
 ## 1. Review the Requirements
 
