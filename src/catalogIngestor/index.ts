@@ -75,5 +75,6 @@ export class CatalogIngestor {
 
 interface Credentials {
   apiToken: string;
+  apiKey: string;
   connectionId?: string;
 }

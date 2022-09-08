@@ -16,6 +16,7 @@ describe("CatalogIngestor", () => {
     catalogIngestor = new CatalogIngestor({
       connectionId: "connection-id",
       apiToken: "api-token",
+      apiKey: "api-key",
     });
 
     payload = catalogIngestionPayloadFactory.build();
@@ -41,6 +42,7 @@ describe("CatalogIngestor", () => {
     expect(catalogIngestor.credentials).toEqual({
       connectionId: "connection-id",
       apiToken: "api-token",
+      apiKey: "api-key",
     });
   });
 
@@ -48,6 +50,7 @@ describe("CatalogIngestor", () => {
     beforeEach(() => {
       catalogIngestor = new CatalogIngestor({
         apiToken: "api-token",
+        apiKey: "api-key",
       });
 
       jest.spyOn(console, "warn").mockImplementation();
