@@ -38,8 +38,8 @@ describe("CatalogIngestor", () => {
       .mockResolvedValue();
   });
 
-  it("should allow initializing with new credentials", () => {
-    expect(catalogIngestor.credentials).toEqual({
+  it("should allow initializing with new options", () => {
+    expect(catalogIngestor.options).toEqual({
       connectionId: "connection-id",
       apiToken: "api-token",
       apiKey: "api-key",
