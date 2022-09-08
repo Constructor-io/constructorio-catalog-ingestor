@@ -4,9 +4,9 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Constructor-io/constructorio-catalog-ingestor/blob/master/LICENSE)
 [![Minzipped Size](https://img.shields.io/bundlephobia/minzip/@constructor-io/catalog-ingestor)](https://bundlephobia.com/result?p=@constructor-io/catalog-ingestor)
 
-A Node.js library for easily ingesting product catalogs into Constructor.io, using a strict type system.
+A Node.js library for easily ingesting product catalogs into Constructor.io using a strict type system.
 
-> This client is intended for use in server side integrations. If you want a JavaScript client for client side (i.e. front end) integrations please use [@constructor-io/constructorio-client-javascript](https://github.com/Constructor-io/constructorio-client-javascript)
+> This client is intended for use with partner connections - that is, integrating other systems with Constructor.io. If you're looking for a package to consume our API, please use [@constructor-io/constructorio-node](https://github.com/Constructor-io/constructorio-node) instead. Alternatively, if you want a JavaScript client for client side (i.e. front end) integrations please use [@constructor-io/constructorio-client-javascript](https://github.com/Constructor-io/constructorio-client-javascript).
 
 ## Architecture overview
 
