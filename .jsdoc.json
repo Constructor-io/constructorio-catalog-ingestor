@@ -1,5 +1,13 @@
 {
+  "plugins": [],
+  "recurseDepth": 10,
+  "sourceType": "module",
+  "source": {
+    "include": ["README.md", "./dist"]
+  },
   "opts": {
-    "template": "node_modules/minami"
+    "template": "node_modules/minami",
+    "destination": "./docs",
+    "recurse": true
   }
 }
