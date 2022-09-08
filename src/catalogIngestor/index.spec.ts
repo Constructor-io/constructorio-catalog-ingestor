@@ -136,12 +136,15 @@ describe("CatalogIngestor", () => {
         expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledTimes(1);
 
         expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledWith(
-          "api-token",
-          payload.type,
           {
             groups: "groups",
             items: "items",
             variations: "variations",
+          },
+          {
+            apiToken: "api-token",
+            type: payload.type,
+            apiKey: "api-key",
           }
         );
       });

@@ -33,11 +33,11 @@ export class CatalogIngestor {
 
       const csvPayload = await buildCsvPayload(payload.data);
 
-      const taskId = await ingestCatalogCsv(
-        this.credentials.apiToken,
-        payload.type,
-        csvPayload
-      );
+      const taskId = await ingestCatalogCsv(csvPayload, {
+        apiToken: this.credentials.apiToken,
+        apiKey: this.credentials.apiKey,
+        type: payload.type,
+      });
 
       await this.createIngestionEvent(startTime, true, payload, taskId);
     } catch (error) {
