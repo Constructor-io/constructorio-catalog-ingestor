@@ -12,7 +12,7 @@ export async function createIngestionEvent(
 ): Promise<void> {
   await got
     .post({
-      url: `${config.baseUrl}/catalog-ingestion-events/create/${connectionId}`,
+      url: `${config.serviceUrl}/catalog-ingestion-events/create/${connectionId}`,
       body: JSON.stringify(payload),
     })
     .catch(() => {

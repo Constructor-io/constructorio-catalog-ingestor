@@ -1,19 +1,19 @@
 import { createIngestionEvent } from "../constructor/partnerAuthenticator/api/catalogIngestionEvents/create";
-import { ingestCatalogCsv } from "../constructor/backend/api/catalog/ingestCatalogCsv";
-import { buildCsvPayload } from "../constructor/backend/helpers/buildCsvPayload";
+import { ingestCatalogCsv } from "../constructor/ac/api/catalog/ingestCatalogCsv";
+import { buildCsvPayload } from "../constructor/ac/helpers/buildCsvPayload";
 
 import { CatalogIngestionPayload } from "./types";
 
 export class CatalogIngestor {
-  readonly credentials: Credentials;
+  readonly options: Options;
 
   constructor(
     /**
-     * The credentials that will be used during the ingestion.
+     * The options that will be used during the ingestion.
      */
-    credentials: Credentials
+    options: Options
   ) {
-    this.credentials = credentials;
+    this.options = options;
   }
 
   /**
@@ -34,8 +34,10 @@ export class CatalogIngestor {
       const csvPayload = await buildCsvPayload(payload.data);
 
       const taskId = await ingestCatalogCsv(csvPayload, {
-        apiToken: this.credentials.apiToken,
-        apiKey: this.credentials.apiKey,
+        notificationEmail: this.options.notificationEmail,
+        force: this.options.force ?? true,
+        apiToken: this.options.apiToken,
+        apiKey: this.options.apiKey,
         type: payload.type,
       });
 
@@ -52,7 +54,7 @@ export class CatalogIngestor {
     payload: CatalogIngestionPayload | null,
     taskId: string | null
   ) {
-    if (!this.credentials.connectionId) {
+    if (!this.options.connectionId) {
       console.warn(
         "[Ingestor] The connection id is not provided. Skipping ingestion event creation."
       );
@@ -62,7 +64,7 @@ export class CatalogIngestor {
 
     const totalTimeMs = new Date().getTime() - startTime.getTime();
 
-    await createIngestionEvent(this.credentials.connectionId, {
+    await createIngestionEvent(this.options.connectionId, {
       success,
       cioTaskId: taskId ?? null,
       countOfVariations: payload?.data?.variations?.length ?? 0,
@@ -73,8 +75,32 @@ export class CatalogIngestor {
   }
 }
 
-interface Credentials {
+interface Options {
+  /**
+   * The Constructor.io API token.
+   */
   apiToken: string;
+
+  /**
+   * The Constructor.io API key.
+   */
   apiKey: string;
+
+  /**
+   * The connection id to be used when creating ingestion events.
+   * Provided by the partner connector.
+   */
   connectionId?: string;
+
+  /**
+   * Process the catalog even if it will invalidate a large number of existing items.
+   * Defaults to true, since this package assumes that the ingestion happens in
+   * an automated way from a partner system.
+   */
+  force?: boolean;
+
+  /**
+   * An email address where you'd like to receive an email notification in case the task fails.
+   */
+  notificationEmail?: string;
 }

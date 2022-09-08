@@ -1,8 +1,8 @@
 import { config } from "./config";
 
 describe("config", () => {
-  it("should have a baseUrl", () => {
-    expect(config.baseUrl).toBe("https://ac.cnstrc.com");
+  it("should have a serviceUrl", () => {
+    expect(config.serviceUrl).toBe("https://ac.cnstrc.com");
   });
 
   describe(config.buildHeaders, () => {
@@ -11,7 +11,7 @@ describe("config", () => {
       const headers = config.buildHeaders(apiToken);
 
       expect(headers).toEqual({
-        Authorization: "Basic Zm9v",
+        Authorization: "Basic Zm9vOg==",
       });
     });
   });

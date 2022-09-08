@@ -1,7 +1,7 @@
 import * as createIngestionEvent from "../constructor/partnerAuthenticator/api/catalogIngestionEvents/create";
 import { catalogIngestionPayloadFactory } from "../../test/factories/catalogIngestionPayload.factory";
-import * as ingestCatalogCsv from "../constructor/backend/api/catalog/ingestCatalogCsv";
-import * as buildCsvPayload from "../constructor/backend/helpers/buildCsvPayload";
+import * as ingestCatalogCsv from "../constructor/ac/api/catalog/ingestCatalogCsv";
+import * as buildCsvPayload from "../constructor/ac/helpers/buildCsvPayload";
 
 import { CatalogIngestionPayload } from "./types";
 
@@ -38,8 +38,8 @@ describe("CatalogIngestor", () => {
       .mockResolvedValue();
   });
 
-  it("should allow initializing with new credentials", () => {
-    expect(catalogIngestor.credentials).toEqual({
+  it("should allow initializing with new options", () => {
+    expect(catalogIngestor.options).toEqual({
       connectionId: "connection-id",
       apiToken: "api-token",
       apiKey: "api-key",
@@ -142,9 +142,11 @@ describe("CatalogIngestor", () => {
             variations: "variations",
           },
           {
+            notificationEmail: undefined,
             apiToken: "api-token",
             type: payload.type,
             apiKey: "api-key",
+            force: true,
           }
         );
       });
@@ -193,6 +195,37 @@ describe("CatalogIngestor", () => {
             countOfVariations: 1,
             totalIngestionTimeMs: expect.any(Number),
           });
+        });
+      });
+
+      describe("when initializing with custom options", () => {
+        beforeEach(() => {
+          catalogIngestor = new CatalogIngestor({
+            notificationEmail: "foo@email.com",
+            connectionId: "connection-id",
+            apiToken: "api-token",
+            apiKey: "api-key",
+            force: false,
+          });
+        });
+
+        it("should pass options to ingest function", async () => {
+          await catalogIngestor.ingest(getData);
+
+          expect(ingestCatalogCsv.ingestCatalogCsv).toHaveBeenCalledWith(
+            {
+              groups: "groups",
+              items: "items",
+              variations: "variations",
+            },
+            {
+              notificationEmail: "foo@email.com",
+              apiToken: "api-token",
+              type: payload.type,
+              apiKey: "api-key",
+              force: false,
+            }
+          );
         });
       });
     });

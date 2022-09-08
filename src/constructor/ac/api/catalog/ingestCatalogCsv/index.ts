@@ -21,12 +21,9 @@ export async function ingestCatalogCsv(
 
   const json = await httpFunction({
     headers: config.buildHeaders(options.apiToken),
-    url: `${config.baseUrl}/v1/catalog`,
+    searchParams: buildSearchParams(options),
+    url: `${config.serviceUrl}/v1/catalog`,
     body: formData,
-    searchParams: {
-      section: "Products",
-      key: options.apiKey,
-    },
   }).json<Response>();
 
   const { task_id: taskId } = json;
@@ -72,6 +69,28 @@ function buildFormData(payload: CsvPayload): FormData {
   return formData;
 }
 
+/**
+ * Builds the search params for the request.
+ * @param options The api options.
+ * @returns The search params.
+ */
+function buildSearchParams(options: ApiOptions): Record<string, string> {
+  const params = {
+    force: options.force ? "1" : "0",
+    section: "Products",
+    key: options.apiKey,
+  };
+
+  if (options.notificationEmail) {
+    return {
+      ...params,
+      notification_email: options.notificationEmail,
+    };
+  }
+
+  return params;
+}
+
 export interface CsvPayload {
   /**
    * The input groups converted into csv format.
@@ -98,4 +117,6 @@ export interface ApiOptions {
   apiKey: string;
   apiToken: string;
   type: CatalogIngestionType;
+  force: boolean;
+  notificationEmail?: string;
 }
