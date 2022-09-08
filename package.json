@@ -11,8 +11,8 @@
   ],
   "scripts": {
     "build": "npm run build:es && npm run build:cjs",
-    "build:es": "tsc --declaration true --declarationMap true --module esnext --outDir \"./dist/es\"",
-    "build:cjs": "tsc --declaration true --declarationMap true --module commonjs --outDir \"./dist/commonjs\"",
+    "build:cjs": "tsc --project tsconfig.production.json --module commonjs --outDir \"./dist/commonjs\"",
+    "build:es": "tsc --project tsconfig.production.json --module esnext --outDir \"./dist/es\"",
     "prepare": "npm run build",
     "prebuild": "rm -rf dist",
     "pregenerate-docs": "rm -rf docs",
