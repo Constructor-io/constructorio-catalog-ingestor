@@ -75,7 +75,10 @@ export class CatalogIngestor {
   }
 }
 
-interface Options {
+/**
+ * The options used to instantiate a CatalogIngestor.
+ */
+export interface Options {
   /**
    * The Constructor.io API token.
    */
