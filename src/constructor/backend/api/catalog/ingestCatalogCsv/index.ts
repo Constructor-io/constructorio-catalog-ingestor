@@ -6,25 +6,26 @@ import { config } from "../../config";
 
 /**
  * Ingests the catalog CSV files into Constructor.
- * @param apiToken The API token.
  * @param payload The data parsed into csv files.
+ * @param config The api config.
  * @returns The created task id.
  */
 export async function ingestCatalogCsv(
-  apiToken: string,
-  type: CatalogIngestionType,
-  payload: CsvPayload
+  payload: CsvPayload,
+  options: ApiOptions
 ): Promise<string> {
   const formData = buildFormData(payload);
 
-  const httpFunction = type === CatalogIngestionType.FULL ? got.put : got.patch;
+  const httpFunction =
+    options.type === CatalogIngestionType.FULL ? got.put : got.patch;
 
   const json = await httpFunction({
+    headers: config.buildHeaders(options.apiToken),
     url: `${config.baseUrl}/v1/catalog`,
     body: formData,
     searchParams: {
       section: "Products",
-      key: apiToken,
+      key: options.apiKey,
     },
   }).json<Response>();
 
@@ -91,4 +92,10 @@ export interface CsvPayload {
 interface Response {
   task_id: string;
   task_status_path: string;
+}
+
+export interface ApiOptions {
+  apiKey: string;
+  apiToken: string;
+  type: CatalogIngestionType;
 }
