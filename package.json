@@ -15,7 +15,7 @@
     "build:es": "tsc --project tsconfig.production.json --module esnext --outDir \"./dist/es\"",
     "prepare": "npm run build",
     "prebuild": "rm -rf dist",
-    "pregenerate-docs": "rm -rf docs",
+    "pregenerate-docs": "npm run build && rm -rf docs",
     "generate-docs": "jsdoc -c ./.jsdoc.json",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "license-check": "license-checker --production --onlyAllow 'Apache-2.0;BSD-3-Clause;BSD-2-Clause;ISC;MIT'",
