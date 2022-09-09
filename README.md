@@ -43,9 +43,9 @@ This package can be installed via npm: `npm i @constructor-io/catalog-ingestor`.
 
 You can find this in your [Constructor.io dashboard](https://constructor.io/dashboard). Contact sales if you'd like to sign up, or support if you believe your company already has an account.
 
-## 4. Implement the Client
+## 4. Implement the ingestor
 
-Once imported, an instance of the client can be created as follows:
+Once imported, an instance of the ingestor can be created as follows:
 
 ```ts
 import { CatalogIngestor } from "@constructor-io/catalog-ingestor";
