@@ -21,7 +21,7 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "license-check": "license-checker --production --onlyAllow 'Apache-2.0;BSD-3-Clause;BSD-2-Clause;ISC;MIT'",
     "type-check": "tsc --noemit",
-    "dev": "ts-node-esm --experimental-specifier-resolution=node src/index.ts",
+    "dev": "ts-node-esm src/index.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage"
@@ -96,7 +96,9 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/index.ts"
     ],
-    "setupFiles": [],
+    "setupFiles": [
+      "./test/setupTests.ts"
+    ],
     "coverageDirectory": "coverage",
     "testEnvironment": "node",
     "resetMocks": true
