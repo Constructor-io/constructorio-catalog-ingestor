@@ -16,22 +16,24 @@ export async function ingestCatalogCsv(
 ): Promise<string> {
   const formData = buildFormData(payload);
 
+  console.log("[Ingestor] Sending request to ingest catalog CSV files.");
+
   const httpFunction =
     options.type === CatalogIngestionType.FULL ? got.put : got.patch;
 
-  const json = await httpFunction({
+  const response = await httpFunction({
     headers: config.buildHeaders(options.apiToken),
     searchParams: buildSearchParams(options),
     url: `${config.serviceUrl}/v1/catalog`,
     body: formData,
   }).json<Response>();
 
-  const { task_id: taskId } = json;
+  console.log("[Ingestor] API response", response);
+
+  const { task_id: taskId } = response;
 
   if (!taskId) {
-    throw new Error(
-      "[Ingestor] Received error response while ingesting CSV files."
-    );
+    throw new Error("[Ingestor] Failed to ingest catalog.");
   }
 
   return taskId;
@@ -46,22 +48,19 @@ function buildFormData(payload: CsvPayload): FormData {
   const formData = new FormData();
 
   if (payload.groups) {
-    formData.append("groups", payload.groups, {
-      contentType: "application/octet-stream",
+    formData.append("item_groups", payload.groups, {
       filename: "item_groups.csv",
     });
   }
 
   if (payload.items) {
     formData.append("items", payload.items, {
-      contentType: "application/octet-stream",
       filename: "items.csv",
     });
   }
 
   if (payload.variations) {
     formData.append("variations", payload.variations, {
-      contentType: "application/octet-stream",
       filename: "variations.csv",
     });
   }

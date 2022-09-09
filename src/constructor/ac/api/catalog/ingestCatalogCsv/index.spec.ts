@@ -144,7 +144,7 @@ describe(ingestCatalogCsv, () => {
 
     it("throws an error", async () => {
       await expect(ingestCatalogCsv(payload, options)).rejects.toThrowError(
-        "[Ingestor] Received error response while ingesting CSV files."
+        "[Ingestor] Failed to ingest catalog."
       );
     });
   });
@@ -158,10 +158,9 @@ describe(ingestCatalogCsv, () => {
       await ingestCatalogCsv(payload, options);
 
       expect(FormData.prototype.append).toHaveBeenCalledWith(
-        "groups",
+        "item_groups",
         "groups",
         {
-          contentType: "application/octet-stream",
           filename: "item_groups.csv",
         }
       );
@@ -171,7 +170,6 @@ describe(ingestCatalogCsv, () => {
       await ingestCatalogCsv(payload, options);
 
       expect(FormData.prototype.append).toHaveBeenCalledWith("items", "items", {
-        contentType: "application/octet-stream",
         filename: "items.csv",
       });
     });
@@ -183,7 +181,6 @@ describe(ingestCatalogCsv, () => {
         "variations",
         "variations",
         {
-          contentType: "application/octet-stream",
           filename: "variations.csv",
         }
       );
@@ -203,7 +200,6 @@ describe(ingestCatalogCsv, () => {
           "groups",
           "groups",
           {
-            contentType: "application/octet-stream",
             filename: "item_groups.csv",
           }
         );
@@ -224,7 +220,6 @@ describe(ingestCatalogCsv, () => {
           "items",
           "items",
           {
-            contentType: "application/octet-stream",
             filename: "items.csv",
           }
         );
@@ -245,7 +240,6 @@ describe(ingestCatalogCsv, () => {
           "variations",
           "variations",
           {
-            contentType: "application/octet-stream",
             filename: "variations.csv",
           }
         );
