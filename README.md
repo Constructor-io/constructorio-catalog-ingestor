@@ -4,9 +4,9 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Constructor-io/constructorio-catalog-ingestor/blob/master/LICENSE)
 [![Minzipped Size](https://img.shields.io/bundlephobia/minzip/@constructor-io/catalog-ingestor)](https://bundlephobia.com/result?p=@constructor-io/catalog-ingestor)
 
-A Node.js library for easily ingesting product catalogs into Constructor.io using a strict type system.
+Constructor.io is an e-commerce first product discovery service that optimizes results using artificial intelligence (including natural language processing, re-ranking to optimize for business metrics, and end user personalization).
 
-**This client is intended for use with partner connections** - that is, integrating other systems with Constructor.io
+This package is a Node.js library for easily ingesting product catalogs into Constructor.io using a strict type system. **It is intended for use with partner connections** - that is, integrating other systems such as e-commerce platforms or product information management platforms with Constructor.io
 
 > If you're looking for a package to consume our API, please use [@constructor-io/constructorio-node](https://github.com/Constructor-io/constructorio-node) instead. Alternatively, if you want a JavaScript client for client side (i.e. front end) integrations please use [@constructor-io/constructorio-client-javascript](https://github.com/Constructor-io/constructorio-client-javascript).
 
@@ -43,9 +43,9 @@ This package can be installed via npm: `npm i @constructor-io/catalog-ingestor`.
 
 You can find this in your [Constructor.io dashboard](https://constructor.io/dashboard). Contact sales if you'd like to sign up, or support if you believe your company already has an account.
 
-## 4. Implement the Client
+## 4. Implement the ingestor
 
-Once imported, an instance of the client can be created as follows:
+Once imported, an instance of the ingestor can be created as follows:
 
 ```ts
 import { CatalogIngestor } from "@constructor-io/catalog-ingestor";

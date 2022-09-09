@@ -17,8 +17,8 @@
 <p><a href="https://www.npmjs.com/package/@constructor-io/catalog-ingestor"><img src="https://img.shields.io/npm/v/@constructor-io/catalog-ingestor" alt="npm"></a>
 <a href="https://github.com/Constructor-io/constructorio-catalog-ingestor/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT licensed"></a>
 <a href="https://bundlephobia.com/result?p=@constructor-io/catalog-ingestor"><img src="https://img.shields.io/bundlephobia/minzip/@constructor-io/catalog-ingestor" alt="Minzipped Size"></a></p>
-<p>A Node.js library for easily ingesting product catalogs into Constructor.io using a strict type system.</p>
-<p><strong>This client is intended for use with partner connections</strong> - that is, integrating other systems with Constructor.io</p>
+<p>Constructor.io is an e-commerce first product discovery service that optimizes results using artificial intelligence (including natural language processing, re-ranking to optimize for business metrics, and end user personalization).</p>
+<p>This package is a Node.js library for easily ingesting product catalogs into Constructor.io using a strict type system. <strong>It is intended for use with partner connections</strong> - that is, integrating other systems such as e-commerce platforms or product information management platforms with Constructor.io</p>
 <blockquote>
 <p>If you&#39;re looking for a package to consume our API, please use <a href="https://github.com/Constructor-io/constructorio-node">@constructor-io/constructorio-node</a> instead. Alternatively, if you want a JavaScript client for client side (i.e. front end) integrations please use <a href="https://github.com/Constructor-io/constructorio-client-javascript">@constructor-io/constructorio-client-javascript</a>.</p>
 </blockquote>
@@ -59,10 +59,10 @@ while calling this package, so ideally you should be working with a specific par
 </a>
 <p>You can find this in your <a href="https://constructor.io/dashboard">Constructor.io dashboard</a>. Contact sales if you&#39;d like to sign up, or support if you believe your company already has an account.</p>
 
-<a href="#4-implement-the-client" id="4-implement-the-client" style="color: inherit; text-decoration: none;">
-  <h2>4. Implement the Client</h2>
+<a href="#4-implement-the-ingestor" id="4-implement-the-ingestor" style="color: inherit; text-decoration: none;">
+  <h2>4. Implement the ingestor</h2>
 </a>
-<p>Once imported, an instance of the client can be created as follows:</p>
+<p>Once imported, an instance of the ingestor can be created as follows:</p>
 <pre><code class="language-ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">CatalogIngestor</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;@constructor-io/catalog-ingestor&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">catalogIngestor</span><span class="hl-1"> = </span><span class="hl-4">new</span><span class="hl-1"> </span><span class="hl-6">CatalogIngestor</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-2">connectionId:</span><span class="hl-1"> </span><span class="hl-3">&quot;YOUR CONNECTION ID&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">apiToken:</span><span class="hl-1"> </span><span class="hl-3">&quot;YOUR API TOKEN&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">apiKey:</span><span class="hl-1"> </span><span class="hl-3">&quot;YOUR API KEY&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">});</span>
 </code></pre>
 <p>You can also provide more options to the ingestor, such as an email to notify in case the ingestion fails. For example:</p>
