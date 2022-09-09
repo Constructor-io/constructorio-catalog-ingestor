@@ -6,7 +6,7 @@
 
 A Node.js library for easily ingesting product catalogs into Constructor.io using a strict type system.
 
-**This client is intended for use with partner connections** - that is, integrating other systems with Constructor.io
+**This client is intended for use with partner connections** - that is, integrating other systems such as e-commerce platforms or product information management platforms with Constructor.io
 
 > If you're looking for a package to consume our API, please use [@constructor-io/constructorio-node](https://github.com/Constructor-io/constructorio-node) instead. Alternatively, if you want a JavaScript client for client side (i.e. front end) integrations please use [@constructor-io/constructorio-client-javascript](https://github.com/Constructor-io/constructorio-client-javascript).
 
