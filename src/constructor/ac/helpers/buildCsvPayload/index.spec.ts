@@ -60,7 +60,7 @@ describe(buildCsvPayload, () => {
 
     it("correctly parses items with null values", async () => {
       const result = await buildCsvPayload({
-        items: [itemFactory.build({ url: null })],
+        items: [itemFactory.build({ image_url: null })],
         variations: [],
         groups: [],
       });
@@ -68,7 +68,7 @@ describe(buildCsvPayload, () => {
       expect(result.items).toEqual(
         buildExpectedCsv([
           "id,item_name,url,image_url,description,keywords,group_ids,active,facet:facet-1-key,facet:facet-2-key,metadata:metadata-1-key,metadata:metadata-2-key",
-          "item-id,item-name,,item-image-url,item-description,item-keyword,all|group-id,true,facet-1-value,facet-2-value,metadata-1-value,metadata-2-value",
+          "item-id,item-name,item-url,,item-description,item-keyword,all|group-id,true,facet-1-value,facet-2-value,metadata-1-value,metadata-2-value",
         ])
       );
     });
