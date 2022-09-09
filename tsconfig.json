@@ -6,7 +6,7 @@
       "es6",
       "es2017.object"
     ],
-    "module": "esnext",
+    "module": "NodeNext",
     "preserveConstEnums": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
