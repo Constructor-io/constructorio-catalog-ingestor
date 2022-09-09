@@ -14,7 +14,7 @@ This package is a Node.js library for easily ingesting product catalogs into Con
 
 Here's how the `@constructor-io/catalog-ingestor` package usually fits into the overall ecosystem:
 
-<img src="./images/diagram.png" width="1000px" height="auto" alt="Catalog Ingestor Diagram" />
+<img src="https://raw.githubusercontent.com/Constructor-io/constructorio-catalog-ingestor/master/images/diagram.png" width="1000px" height="auto" alt="Catalog Ingestor Diagram" />
 
 ## Documentation
 
