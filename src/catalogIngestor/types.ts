@@ -53,7 +53,7 @@ export interface Item {
   id: string;
   item_name: string;
   description: string;
-  url: string | null;
+  url: string;
   image_url: string | null;
   active: boolean;
   keywords: string[];
