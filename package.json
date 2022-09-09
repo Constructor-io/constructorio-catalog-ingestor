@@ -96,7 +96,9 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/index.ts"
     ],
-    "setupFiles": [],
+    "setupFiles": [
+      "./test/setupTests.ts"
+    ],
     "coverageDirectory": "coverage",
     "testEnvironment": "node",
     "resetMocks": true
