@@ -1,6 +1,7 @@
 {
   // https://www.typescriptlang.org/tsconfig#compilerOptions
   "compilerOptions": {
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": [
       "es6",
