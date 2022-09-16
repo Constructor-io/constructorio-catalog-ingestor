@@ -1,16 +1,37 @@
-import FormData from "form-data";
-import got from "got";
-
 import { CatalogIngestionType } from "../../../../../catalogIngestor/types";
 
-import { ApiOptions, CsvPayload, ingestCatalogCsv } from ".";
+import { Options, CsvPayload, ingestCatalogCsv } from ".";
+
+let replaceCatalog: jest.Mock;
+let updateCatalog: jest.Mock;
+
+jest.mock("@constructor-io/constructorio-node", () => {
+  return function () {
+    replaceCatalog = jest.fn().mockResolvedValue({
+      task_status_path: "task_status_path",
+      task_id: "task_id",
+    });
+
+    updateCatalog = jest.fn().mockResolvedValue({
+      task_status_path: "task_status_path",
+      task_id: "task_id",
+    });
+
+    return {
+      catalog: {
+        replaceCatalog,
+        updateCatalog,
+      },
+    };
+  };
+});
 
 describe(ingestCatalogCsv, () => {
-  const options: ApiOptions = {
+  const options: Options = {
     type: CatalogIngestionType.FULL,
     notificationEmail: undefined,
-    apiToken: "apiToken",
-    apiKey: "apiKey",
+    apiToken: "tok_9999999999999999",
+    apiKey: "key_9999999999999999",
     force: true,
   };
 
@@ -20,24 +41,6 @@ describe(ingestCatalogCsv, () => {
     items: "items",
   };
 
-  beforeEach(() => {
-    jest.spyOn(got, "patch").mockReturnValue({
-      json: async () =>
-        await Promise.resolve({
-          task_status_path: "task_status_path",
-          task_id: "task_id",
-        }),
-    } as any);
-
-    jest.spyOn(got, "put").mockReturnValue({
-      json: async () =>
-        await Promise.resolve({
-          task_status_path: "task_status_path",
-          task_id: "task_id",
-        }),
-    } as any);
-  });
-
   it("returns the task id", async () => {
     const result = await ingestCatalogCsv(payload, options);
 
@@ -45,65 +48,53 @@ describe(ingestCatalogCsv, () => {
   });
 
   describe("when performing full ingestion", () => {
-    it("calls the PUT api with correct params", async () => {
+    it("calls the replaceCatalog api with correct params", async () => {
       await ingestCatalogCsv(payload, options);
 
-      expect(got.put).toHaveBeenCalledWith({
-        url: "https://ac.cnstrc.com/v1/catalog",
-        body: expect.any(FormData),
-        headers: {
-          Authorization: "Basic YXBpVG9rZW46",
-        },
-        searchParams: {
-          section: "Products",
-          key: "apiKey",
-          force: "1",
-        },
+      expect(replaceCatalog).toHaveBeenCalledWith({
+        notification_email: undefined,
+        section: "Products",
+        force: true,
+        variations: payload.variations,
+        item_groups: payload.groups,
+        items: payload.items,
       });
     });
   });
 
   describe("when performing delta ingestion", () => {
-    it("calls the PATCH api with correct params", async () => {
+    it("calls the updateCatalog api with correct params", async () => {
       await ingestCatalogCsv(payload, {
         ...options,
         type: CatalogIngestionType.DELTA,
       });
 
-      expect(got.patch).toHaveBeenCalledWith({
-        url: "https://ac.cnstrc.com/v1/catalog",
-        body: expect.any(FormData),
-        headers: {
-          Authorization: "Basic YXBpVG9rZW46",
-        },
-        searchParams: {
-          section: "Products",
-          key: "apiKey",
-          force: "1",
-        },
+      expect(updateCatalog).toHaveBeenCalledWith({
+        notification_email: undefined,
+        section: "Products",
+        force: true,
+        variations: payload.variations,
+        item_groups: payload.groups,
+        items: payload.items,
       });
     });
   });
 
   describe("request options", () => {
     describe("when force is false", () => {
-      it("sends force = 0", async () => {
+      it("sends force = false", async () => {
         await ingestCatalogCsv(payload, {
           ...options,
           force: false,
         });
 
-        expect(got.put).toHaveBeenCalledWith({
-          url: "https://ac.cnstrc.com/v1/catalog",
-          body: expect.any(FormData),
-          headers: {
-            Authorization: "Basic YXBpVG9rZW46",
-          },
-          searchParams: {
-            section: "Products",
-            key: "apiKey",
-            force: "0",
-          },
+        expect(replaceCatalog).toHaveBeenCalledWith({
+          notification_email: undefined,
+          section: "Products",
+          force: false,
+          variations: payload.variations,
+          item_groups: payload.groups,
+          items: payload.items,
         });
       });
     });
@@ -115,77 +106,19 @@ describe(ingestCatalogCsv, () => {
           notificationEmail: "foo@email.com",
         });
 
-        expect(got.put).toHaveBeenCalledWith({
-          url: "https://ac.cnstrc.com/v1/catalog",
-          body: expect.any(FormData),
-          headers: {
-            Authorization: "Basic YXBpVG9rZW46",
-          },
-          searchParams: {
-            notification_email: "foo@email.com",
-            section: "Products",
-            key: "apiKey",
-            force: "1",
-          },
+        expect(replaceCatalog).toHaveBeenCalledWith({
+          notification_email: "foo@email.com",
+          section: "Products",
+          force: true,
+          variations: payload.variations,
+          item_groups: payload.groups,
+          items: payload.items,
         });
       });
     });
   });
 
-  describe("when the request fails", () => {
-    beforeEach(() => {
-      jest.spyOn(got, "put").mockReturnValue({
-        json: async () =>
-          await Promise.resolve({
-            error: "Something went very wrong 💣",
-          }),
-      } as any);
-    });
-
-    it("throws an error", async () => {
-      await expect(ingestCatalogCsv(payload, options)).rejects.toThrowError(
-        "[Ingestor] Failed to ingest catalog."
-      );
-    });
-  });
-
-  describe("when building the form data", () => {
-    beforeEach(() => {
-      jest.spyOn(FormData.prototype, "append");
-    });
-
-    it("appends groups", async () => {
-      await ingestCatalogCsv(payload, options);
-
-      expect(FormData.prototype.append).toHaveBeenCalledWith(
-        "item_groups",
-        "groups",
-        {
-          filename: "item_groups.csv",
-        }
-      );
-    });
-
-    it("appends items", async () => {
-      await ingestCatalogCsv(payload, options);
-
-      expect(FormData.prototype.append).toHaveBeenCalledWith("items", "items", {
-        filename: "items.csv",
-      });
-    });
-
-    it("appends variations", async () => {
-      await ingestCatalogCsv(payload, options);
-
-      expect(FormData.prototype.append).toHaveBeenCalledWith(
-        "variations",
-        "variations",
-        {
-          filename: "variations.csv",
-        }
-      );
-    });
-
+  describe("when passing the csv payload", () => {
     describe("when there are no groups", () => {
       it("does not append groups", async () => {
         await ingestCatalogCsv(
@@ -196,12 +129,10 @@ describe(ingestCatalogCsv, () => {
           options
         );
 
-        expect(FormData.prototype.append).not.toHaveBeenCalledWith(
-          "groups",
-          "groups",
-          {
-            filename: "item_groups.csv",
-          }
+        expect(replaceCatalog).toHaveBeenCalledWith(
+          expect.objectContaining({
+            item_groups: undefined,
+          })
         );
       });
     });
@@ -216,12 +147,10 @@ describe(ingestCatalogCsv, () => {
           options
         );
 
-        expect(FormData.prototype.append).not.toHaveBeenCalledWith(
-          "items",
-          "items",
-          {
-            filename: "items.csv",
-          }
+        expect(replaceCatalog).toHaveBeenCalledWith(
+          expect.objectContaining({
+            items: undefined,
+          })
         );
       });
     });
@@ -236,12 +165,10 @@ describe(ingestCatalogCsv, () => {
           options
         );
 
-        expect(FormData.prototype.append).not.toHaveBeenCalledWith(
-          "variations",
-          "variations",
-          {
-            filename: "variations.csv",
-          }
+        expect(replaceCatalog).toHaveBeenCalledWith(
+          expect.objectContaining({
+            variations: undefined,
+          })
         );
       });
     });
