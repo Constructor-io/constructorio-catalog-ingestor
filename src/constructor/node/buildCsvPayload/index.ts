@@ -4,8 +4,8 @@ import * as R from "remeda";
 import {
   CatalogIngestionPayloadData,
   KeyValue,
-} from "../../../../catalogIngestor/types";
-import { CsvPayload } from "../../api/catalog/ingestCatalogCsv";
+} from "../../../catalogIngestor/types";
+import { CsvPayload } from "../ingestCatalogCsv";
 
 /**
  * Builds the csv payload for the catalog ingestion.
