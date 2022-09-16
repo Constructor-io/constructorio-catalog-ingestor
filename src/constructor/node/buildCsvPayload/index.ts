@@ -122,7 +122,7 @@ function isNestedField(name: string): boolean {
 /**
  * Gets the transformed name of a nested field.
  * @param name The name of the field.
- * @param key The key() of the nested field.
+ * @param key The key of the nested field.
  * @returns The name of the transformed nested field.
  */
 function getNestedFieldTransformedName(name: string, key: string): string {
