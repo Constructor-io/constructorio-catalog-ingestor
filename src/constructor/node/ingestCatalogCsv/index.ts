@@ -1,7 +1,7 @@
 // @ts-expect-error Types not defined for this package.
 import ConstructorIOClient from "@constructor-io/constructorio-node";
 
-import { CatalogIngestionType } from "../../../../../catalogIngestor/types";
+import { CatalogIngestionType } from "../../../catalogIngestor/types";
 
 /**
  * Ingests the catalog CSV files into Constructor.

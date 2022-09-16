@@ -1,4 +1,4 @@
-import { CatalogIngestionType } from "../../../../../catalogIngestor/types";
+import { CatalogIngestionType } from "../../../catalogIngestor/types";
 
 import { Options, CsvPayload, ingestCatalogCsv } from ".";
 
