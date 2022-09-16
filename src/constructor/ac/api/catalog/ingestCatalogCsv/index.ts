@@ -1,8 +1,7 @@
-import FormData from "form-data";
-import got from "got";
+// @ts-expect-error Types not defined for this package.
+import ConstructorIOClient from "@constructor-io/constructorio-node";
 
 import { CatalogIngestionType } from "../../../../../catalogIngestor/types";
-import { config } from "../../config";
 
 /**
  * Ingests the catalog CSV files into Constructor.
@@ -12,21 +11,28 @@ import { config } from "../../config";
  */
 export async function ingestCatalogCsv(
   payload: CsvPayload,
-  options: ApiOptions
+  options: Options
 ): Promise<string> {
-  const formData = buildFormData(payload);
+  const constructorio = new ConstructorIOClient({
+    apiToken: options.apiToken,
+    apiKey: options.apiKey,
+  });
 
   console.log("[Ingestor] Sending request to ingest catalog CSV files.");
 
-  const httpFunction =
-    options.type === CatalogIngestionType.FULL ? got.put : got.patch;
+  const params = {
+    notification_email: options.notificationEmail,
+    force: options.force,
+    section: "Products",
+    items: payload.items,
+    variations: payload.variations,
+    item_groups: payload.groups,
+  };
 
-  const response = await httpFunction({
-    headers: config.buildHeaders(options.apiToken),
-    searchParams: buildSearchParams(options),
-    url: `${config.serviceUrl}/v1/catalog`,
-    body: formData,
-  }).json<Response>();
+  const response =
+    options.type === CatalogIngestionType.FULL
+      ? await constructorio.catalog.replaceCatalog(params)
+      : await constructorio.catalog.updateCatalog(params);
 
   console.log("[Ingestor] API response", response);
 
@@ -37,57 +43,6 @@ export async function ingestCatalogCsv(
   }
 
   return taskId;
-}
-
-/**
- * Builds the form data for the request.
- * @param payload The data parsed into csv files.
- * @returns The form data.
- */
-function buildFormData(payload: CsvPayload): FormData {
-  const formData = new FormData();
-
-  if (payload.groups) {
-    formData.append("item_groups", payload.groups, {
-      filename: "item_groups.csv",
-    });
-  }
-
-  if (payload.items) {
-    formData.append("items", payload.items, {
-      filename: "items.csv",
-    });
-  }
-
-  if (payload.variations) {
-    formData.append("variations", payload.variations, {
-      filename: "variations.csv",
-    });
-  }
-
-  return formData;
-}
-
-/**
- * Builds the search params for the request.
- * @param options The api options.
- * @returns The search params.
- */
-function buildSearchParams(options: ApiOptions): Record<string, string> {
-  const params = {
-    force: options.force ? "1" : "0",
-    section: "Products",
-    key: options.apiKey,
-  };
-
-  if (options.notificationEmail) {
-    return {
-      ...params,
-      notification_email: options.notificationEmail,
-    };
-  }
-
-  return params;
 }
 
 export interface CsvPayload {
@@ -107,12 +62,7 @@ export interface CsvPayload {
   variations: string | undefined;
 }
 
-interface Response {
-  task_id: string;
-  task_status_path: string;
-}
-
-export interface ApiOptions {
+export interface Options {
   apiKey: string;
   apiToken: string;
   type: CatalogIngestionType;
