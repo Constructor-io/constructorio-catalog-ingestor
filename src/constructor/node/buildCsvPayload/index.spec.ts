@@ -106,8 +106,8 @@ describe(buildCsvPayload, () => {
 
       expect(result.variations).toEqual(
         buildExpectedCsv([
-          "variation_id,item_id,item_name,image_url,active,facet:facet-1-key,facet:facet-2-key,metadata:metadata-1-key,metadata:metadata-2-key",
-          "variation-id,item-id,variation-item-name,variation-image-url,true,facet-1-value,facet-2-value,metadata-1-value,metadata-2-value",
+          "variation_id,item_id,item_name,url,image_url,active,facet:facet-1-key,facet:facet-2-key,metadata:metadata-1-key,metadata:metadata-2-key",
+          "variation-id,item-id,variation-item-name,variation-url,variation-image-url,true,facet-1-value,facet-2-value,metadata-1-value,metadata-2-value",
         ])
       );
     });

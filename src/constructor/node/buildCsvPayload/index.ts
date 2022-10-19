@@ -194,7 +194,14 @@ const columnOrders: Record<keyof CatalogIngestionPayloadData, string[]> = {
     "group_ids",
     "active",
   ],
-  variations: ["variation_id", "item_id", "item_name", "image_url", "active"],
+  variations: [
+    "variation_id",
+    "item_id",
+    "item_name",
+    "url",
+    "image_url",
+    "active",
+  ],
 };
 
 /**
