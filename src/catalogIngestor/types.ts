@@ -104,6 +104,7 @@ export interface Variation {
   variation_id: string;
   item_name: string;
   image_url: string | null;
+  url: string | null;
   item_id: string;
   active: boolean;
 

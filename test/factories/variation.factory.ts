@@ -8,6 +8,7 @@ export const variationFactory = Factory.define<Variation>(() => ({
   active: true,
   item_name: "variation-item-name",
   image_url: "variation-image-url",
+  url: "variation-url",
   metadata: [
     {
       key: "metadata-1-key",
