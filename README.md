@@ -29,7 +29,6 @@ The following credentials are required to use this package:
 
 - `apiToken` - Your Constructor.io API token.
 - `apiKey` - Your Constructor.io API key.
-- `connectionId` (optional) - Usually provided by the partner connector. Identifies the partner connection to report events to.
 
 If you need a more general solution, check out our [Node.js client](https://github.com/Constructor-io/constructorio-node).
 
@@ -51,7 +50,6 @@ Once imported, an instance of the ingestor can be created as follows:
 import { CatalogIngestor } from "@constructor-io/catalog-ingestor";
 
 const catalogIngestor = new CatalogIngestor({
-  connectionId: "YOUR CONNECTION ID",
   apiToken: "YOUR API TOKEN",
   apiKey: "YOUR API KEY",
 });
