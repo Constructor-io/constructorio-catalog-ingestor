@@ -1,4 +1,3 @@
-import * as createIngestionEvent from "../constructor/partnerAuthenticator/api/catalogIngestionEvents/create";
 import { catalogIngestionPayloadFactory } from "../../test/factories/catalogIngestionPayload.factory";
 import * as ingestCatalogCsv from "../constructor/node/ingestCatalogCsv";
 import * as buildCsvPayload from "../constructor/node/buildCsvPayload";
@@ -14,7 +13,6 @@ describe("CatalogIngestor", () => {
 
   beforeEach(() => {
     catalogIngestor = new CatalogIngestor({
-      connectionId: "connection-id",
       apiToken: "api-token",
       apiKey: "api-key",
     });
@@ -32,42 +30,12 @@ describe("CatalogIngestor", () => {
     jest
       .spyOn(ingestCatalogCsv, "ingestCatalogCsv")
       .mockResolvedValue("task_id");
-
-    jest
-      .spyOn(createIngestionEvent, "createIngestionEvent")
-      .mockResolvedValue();
   });
 
   it("should allow initializing with new options", () => {
     expect(catalogIngestor.options).toEqual({
-      connectionId: "connection-id",
       apiToken: "api-token",
       apiKey: "api-key",
-    });
-  });
-
-  describe("when the connection id is not provided", () => {
-    beforeEach(() => {
-      catalogIngestor = new CatalogIngestor({
-        apiToken: "api-token",
-        apiKey: "api-key",
-      });
-
-      jest.spyOn(console, "warn").mockImplementation();
-    });
-
-    it("should not create an ingestion event", async () => {
-      await catalogIngestor.ingest(getData);
-
-      expect(createIngestionEvent.createIngestionEvent).not.toHaveBeenCalled();
-    });
-
-    it("warns", async () => {
-      await catalogIngestor.ingest(getData);
-
-      expect(console.warn).toHaveBeenCalledWith(
-        "[Ingestor] The connection id is not provided. Skipping ingestion event creation."
-      );
     });
   });
 
@@ -99,23 +67,6 @@ describe("CatalogIngestor", () => {
 
           expect(buildCsvPayload.buildCsvPayload).not.toHaveBeenCalled();
           expect(ingestCatalogCsv.ingestCatalogCsv).not.toHaveBeenCalled();
-        });
-
-        it("should create a new failed ingestion event", async () => {
-          await expect(catalogIngestor.ingest(getData)).rejects.toThrow(
-            "Houston, we have a problem! 🧨"
-          );
-
-          expect(
-            createIngestionEvent.createIngestionEvent
-          ).toHaveBeenCalledWith("connection-id", {
-            success: false,
-            cioTaskId: null,
-            countOfGroups: 0,
-            countOfItems: 0,
-            countOfVariations: 0,
-            totalIngestionTimeMs: expect.any(Number),
-          });
         });
       });
     });
@@ -151,22 +102,6 @@ describe("CatalogIngestor", () => {
         );
       });
 
-      it("should create a new successful ingestion event", async () => {
-        await catalogIngestor.ingest(getData);
-
-        expect(createIngestionEvent.createIngestionEvent).toHaveBeenCalledWith(
-          "connection-id",
-          {
-            success: true,
-            cioTaskId: "task_id",
-            countOfGroups: 2,
-            countOfItems: 1,
-            countOfVariations: 1,
-            totalIngestionTimeMs: expect.any(Number),
-          }
-        );
-      });
-
       describe("when the ingestion fails", () => {
         beforeEach(() => {
           jest
@@ -179,30 +114,12 @@ describe("CatalogIngestor", () => {
             "Houston, our api exploded! 🤯"
           );
         });
-
-        it("should create a new failed ingestion event", async () => {
-          await expect(catalogIngestor.ingest(getData)).rejects.toThrow(
-            "Houston, our api exploded! 🤯"
-          );
-
-          expect(
-            createIngestionEvent.createIngestionEvent
-          ).toHaveBeenCalledWith("connection-id", {
-            success: false,
-            cioTaskId: null,
-            countOfGroups: 2,
-            countOfItems: 1,
-            countOfVariations: 1,
-            totalIngestionTimeMs: expect.any(Number),
-          });
-        });
       });
 
       describe("when initializing with custom options", () => {
         beforeEach(() => {
           catalogIngestor = new CatalogIngestor({
             notificationEmail: "foo@email.com",
-            connectionId: "connection-id",
             apiToken: "api-token",
             apiKey: "api-key",
             force: false,

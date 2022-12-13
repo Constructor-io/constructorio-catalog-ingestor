@@ -1,4 +1,3 @@
-import { createIngestionEvent } from "../constructor/partnerAuthenticator/api/catalogIngestionEvents/create";
 import { ingestCatalogCsv } from "../constructor/node/ingestCatalogCsv";
 import { buildCsvPayload } from "../constructor/node/buildCsvPayload";
 
@@ -26,52 +25,20 @@ export class CatalogIngestor {
    */
   async ingest(getData: () => Promise<CatalogIngestionPayload>) {
     let payload: CatalogIngestionPayload | null = null;
-    const startTime = new Date();
 
-    try {
-      payload = await getData();
+    payload = await getData();
 
-      const csvPayload = await buildCsvPayload(payload.data);
+    const csvPayload = await buildCsvPayload(payload.data);
 
-      const taskId = await ingestCatalogCsv(csvPayload, {
-        notificationEmail: this.options.notificationEmail,
-        force: this.options.force ?? true,
-        apiToken: this.options.apiToken,
-        apiKey: this.options.apiKey,
-        type: payload.type,
-      });
-
-      await this.createIngestionEvent(startTime, true, payload, taskId);
-    } catch (error) {
-      await this.createIngestionEvent(startTime, false, payload, null);
-      throw error;
-    }
-  }
-
-  private async createIngestionEvent(
-    startTime: Date,
-    success: boolean,
-    payload: CatalogIngestionPayload | null,
-    taskId: string | null
-  ) {
-    if (!this.options.connectionId) {
-      console.warn(
-        "[Ingestor] The connection id is not provided. Skipping ingestion event creation."
-      );
-
-      return;
-    }
-
-    const totalTimeMs = new Date().getTime() - startTime.getTime();
-
-    await createIngestionEvent(this.options.connectionId, {
-      success,
-      cioTaskId: taskId ?? null,
-      countOfVariations: payload?.data?.variations?.length ?? 0,
-      countOfGroups: payload?.data?.groups?.length ?? 0,
-      countOfItems: payload?.data?.items?.length ?? 0,
-      totalIngestionTimeMs: totalTimeMs,
+    const taskId = await ingestCatalogCsv(csvPayload, {
+      notificationEmail: this.options.notificationEmail,
+      force: this.options.force ?? true,
+      apiToken: this.options.apiToken,
+      apiKey: this.options.apiKey,
+      type: payload.type,
     });
+
+    console.log(`[Ingestor] Finished ingestion. Task ID: ${taskId}.`);
   }
 }
 
@@ -88,12 +55,6 @@ export interface Options {
    * The Constructor.io API key.
    */
   apiKey: string;
-
-  /**
-   * The connection id to be used when creating ingestion events.
-   * Provided by the partner connector.
-   */
-  connectionId?: string;
 
   /**
    * Process the catalog even if it will invalidate a large number of existing items.
