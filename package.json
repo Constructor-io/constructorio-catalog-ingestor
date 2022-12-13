@@ -1,6 +1,6 @@
 {
   "name": "@constructor-io/catalog-ingestor",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Package to help ingesting catalog data into Constructor.io ☕️",
   "license": "MIT",
   "main": "dist/commonjs/index.js",
@@ -67,7 +67,6 @@
   },
   "dependencies": {
     "@constructor-io/constructorio-node": "^4.0.0",
-    "got": "^11.8.5",
     "papaparse": "^5.3.2",
     "remeda": "^1.1.0"
   },
