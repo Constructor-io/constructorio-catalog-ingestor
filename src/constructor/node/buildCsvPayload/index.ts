@@ -38,7 +38,9 @@ async function toCsv<T>(
   type: keyof CatalogIngestionPayloadData,
   objects: T[]
 ): Promise<string | undefined> {
-  if (!objects.length) return await Promise.resolve(undefined);
+  if (!objects.length) {
+    return;
+  }
 
   const proxyObjects = objects.map((object) => toCsvProxyObject(object));
   const columns = getColumnsFromProxyObjects(type, proxyObjects);
