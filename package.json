@@ -1,6 +1,6 @@
 {
   "name": "@constructor-io/catalog-ingestor",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Package to help ingesting catalog data into Constructor.io ☕️",
   "license": "MIT",
   "main": "dist/commonjs/index.js",
