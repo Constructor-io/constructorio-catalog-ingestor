@@ -88,6 +88,84 @@ describe(buildCsvPayload, () => {
       );
     });
 
+    describe("when parsing a item with json metadata", () => {
+      async function buildCsvPayloadWithMetadata(metadataValue: any) {
+        return await buildCsvPayload({
+          items: [
+            itemFactory.build({
+              group_ids: [],
+              facets: [],
+              metadata: [
+                {
+                  key: "test",
+                  value: metadataValue,
+                },
+              ],
+            }),
+          ],
+          variations: [],
+          groups: [],
+        });
+      }
+
+      it("should JSON.stringify the value", async () => {
+        const result = await buildCsvPayloadWithMetadata({
+          json: "👌",
+        });
+
+        expect(result.items).toContain('"{""json"":""👌""}"');
+      });
+
+      it('should prefix the header name with "json:"', async () => {
+        const result = await buildCsvPayloadWithMetadata({
+          json: "👌",
+        });
+
+        expect(result.items).toContain("metadata:json:test");
+      });
+
+      describe("when identifying the root value type", () => {
+        it("should NOT handle string as JSON", async () => {
+          const result = await buildCsvPayloadWithMetadata("just a string");
+          expect(result.items).not.toContain("json");
+        });
+
+        it("should NOT handle null as JSON", async () => {
+          const result = await buildCsvPayloadWithMetadata(null);
+          expect(result.items).not.toContain("json");
+        });
+
+        it("should NOT handle array of strings as JSON", async () => {
+          const result = await buildCsvPayloadWithMetadata(["just", "strings"]);
+          expect(result.items).not.toContain("json");
+        });
+
+        it("should handle array of, not strictly strings, as JSON", async () => {
+          const result = await buildCsvPayloadWithMetadata([
+            "just",
+            "strings",
+            false,
+          ]);
+
+          expect(result.items).toContain("json");
+        });
+
+        it("should handle boolean as JSON", async () => {
+          const result = await buildCsvPayloadWithMetadata(true);
+
+          expect(result.items).toContain("json");
+        });
+
+        it("should handle object as JSON", async () => {
+          const result = await buildCsvPayloadWithMetadata({
+            object: true,
+          });
+
+          expect(result.items).toContain("json");
+        });
+      });
+    });
+
     describe("with an empty array", () => {
       it("returns undefined", async () => {
         const result = await buildCsvPayload({
