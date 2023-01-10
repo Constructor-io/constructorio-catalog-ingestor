@@ -3,9 +3,12 @@ import * as R from "remeda";
 
 import {
   CatalogIngestionPayloadData,
-  KeyValue,
+  JsonKeyValue,
+  StringKeyValue,
 } from "../../../catalogIngestor/types";
 import { CsvPayload } from "../ingestCatalogCsv";
+
+import { isJSONMetadata } from "./helpers";
 
 /**
  * Builds the csv payload for the catalog ingestion.
@@ -38,7 +41,9 @@ async function toCsv<T>(
   type: keyof CatalogIngestionPayloadData,
   objects: T[]
 ): Promise<string | undefined> {
-  if (!objects.length) return await Promise.resolve(undefined);
+  if (!objects.length) {
+    return;
+  }
 
   const proxyObjects = objects.map((object) => toCsvProxyObject(object));
   const columns = getColumnsFromProxyObjects(type, proxyObjects);
@@ -67,7 +72,7 @@ function toCsvProxyObject<T, TOut>(object: T): TOut {
 
       // Nested arrays should be expanded and joined as `{prefix}:key=value`.
       if (isNestedField(key)) {
-        const pairs = value as unknown as KeyValue[];
+        const pairs = value as unknown as StringKeyValue[];
         return pairs.length ? expandNestedArray(acc, key, pairs) : acc;
       }
 
@@ -100,9 +105,18 @@ function toCsvProxyObject<T, TOut>(object: T): TOut {
 function expandNestedArray<TOut>(
   acc: TOut,
   key: string,
-  pairs: KeyValue[]
+  pairs: Array<StringKeyValue | JsonKeyValue>
 ): TOut {
   return pairs.reduce((acc, pair) => {
+    if (isJSONMetadata(pair, key)) {
+      // JSON metadata should be prefixed with "json:"
+      return {
+        ...acc,
+        [getNestedFieldTransformedName(key, `json:${pair.key}`)]:
+          JSON.stringify(pair.value),
+      };
+    }
+
     return {
       ...acc,
       [getNestedFieldTransformedName(key, pair.key)]: pair.value,

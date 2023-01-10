@@ -66,6 +66,7 @@ export interface Item {
 
   /**
    * Defines the metadata for this item.
+   * Metadata also supports arbitrary JSON data.
    *
    * The minimum recommended metadata for an item is:
    * - `originalSrc` (`string`)
@@ -79,7 +80,7 @@ export interface Item {
    * - `minPrice` (`float`)
    * - `maxPrice` (`float`)
    */
-  metadata: KeyValue[];
+  metadata: Metadata[];
 
   /**
    * Defines the facets for this item.
@@ -93,7 +94,7 @@ export interface Item {
    * - `minPrice` (`float`)
    * - `maxPrice` (`float`)
    */
-  facets: KeyValue[];
+  facets: Facet[];
 }
 
 /**
@@ -123,7 +124,7 @@ export interface Variation {
    * - `position` (`number`)
    * - `inventory` (`number`)
    */
-  metadata: KeyValue[];
+  metadata: Metadata[];
 
   /**
    * Defines the facets for this variation.
@@ -134,10 +135,28 @@ export interface Variation {
    * - `price` (`float`)
    * - `compareAtPrice` (`float`)
    */
-  facets: KeyValue[];
+  facets: Facet[];
 }
 
-export interface KeyValue {
+export type Metadata = StringKeyValue | JsonKeyValue;
+export type Facet = StringKeyValue;
+
+export interface StringKeyValue {
   key: string;
   value: string | string[] | null;
 }
+
+export interface JsonKeyValue {
+  key: string;
+  value: JsonArray | JsonObject | boolean;
+}
+
+export type JsonValue =
+  | boolean
+  | number
+  | string
+  | null
+  | JsonArray
+  | JsonObject;
+export interface JsonObject extends Record<string, JsonValue> {}
+export interface JsonArray extends Array<JsonValue> {}
