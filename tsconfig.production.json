@@ -4,6 +4,7 @@
   "compilerOptions": {
     "declarationMap": true,
     "declaration": true,
+    "sourceMap": false
   },
   "exclude": [
     "node_modules",
